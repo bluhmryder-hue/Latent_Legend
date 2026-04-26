@@ -1,4 +1,4 @@
-# 🌌 SentientQuest: An Agentic Powered Game Frontend
+# 🌌 SentientQuest: An Agentic Powered Game
 
 **Version:** 0.1.0
 **Last Modified:** 2026-04-26T17:44:55Z
