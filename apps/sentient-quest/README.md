@@ -66,7 +66,7 @@ To create a node that pulls others in instead of repelling:
 ### Scenario B: Customizing the Genesis Sequence
 The initial world creation is handled by the `GenesisEngine`.
 - **Edit Location:** `public/game.js` -> `GenesisEngine.begin()`.
-- **Modification:** Change the system prompts to alter the "vibe" of the generated school.
+- **Modification:** Change the system prompts to alter the generated school.
 
 ---
 
