@@ -1,5 +1,5 @@
-// Last Modified: 2026-04-26T17:07:24Z
-// Timestamp: 2026-04-26T17:07:24Z
+// Last Modified: 2026-04-26T20:09:25Z
+// Timestamp: 2026-04-26T20:09:25Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -46834,12 +46834,15 @@
                 setTimeout(() => {
                     const ctx = document.getElementById('self-insight-chart');
                     if (ctx && window.Chart) {
+                        const existingChart = Chart.getChart(ctx);
+                        if (existingChart) existingChart.destroy();
+
                         new Chart(ctx, {
                             type: 'radar',
                             data: {
                                 labels: Object.keys(TRAITS.PSYCHE),
                                 datasets: [{
-                                    data: Object.values(p.psych),
+                                    data: UI.getPsycheData(p.psych),
                                     backgroundColor: 'rgba(162, 155, 254, 0.2)',
                                     borderColor: '#a29bfe',
                                     pointRadius: 2
@@ -48048,12 +48051,15 @@
                 setTimeout(() => {
                     const ctx = document.getElementById('locus-insight-chart');
                     if (ctx && window.Chart) {
+                        const existingChart = Chart.getChart(ctx);
+                        if (existingChart) existingChart.destroy();
+
                         new Chart(ctx, {
                             type: 'radar',
                             data: {
                                 labels: Object.keys(TRAITS.PSYCHE),
                                 datasets: [{
-                                    data: Object.values(locus.psych || {}),
+                                    data: UI.getPsycheData(locus.psych),
                                     backgroundColor: 'rgba(162, 155, 254, 0.2)',
                                     borderColor: '#a29bfe',
                                     pointRadius: 2
@@ -48227,7 +48233,9 @@
                     setTimeout(() => {
                         const ctxP = document.getElementById('grim-chart-psyche');
                         if (ctxP && window.Chart) {
-                            if(window.grimPsycheChart) window.grimPsycheChart.destroy();
+                            const existingChart = Chart.getChart(ctxP);
+                            if (existingChart) existingChart.destroy();
+
                             window.grimPsycheChart = new Chart(ctxP, {
                                 type: 'radar',
                                 data: {
@@ -51243,18 +51251,13 @@
             const ctx = document.getElementById('psycheChart');
             if (!ctx) return;
 
-            if (window.psycheChart) {
-                if (typeof window.psycheChart.destroy === 'function') window.psycheChart.destroy();
-                window.psycheChart = null;
+            // 1. CLEANUP: Use official Chart.js method to find and destroy the instance on this canvas
+            const existingChart = Chart.getChart(ctx);
+            if (existingChart) {
+                existingChart.destroy();
             }
 
-            // 1. CLEANUP: Explicitly destroy the previous Chart.js instance
-            if (window.psycheChart instanceof Chart) {
-                window.psycheChart.destroy();
-                window.psycheChart = null;
-            }
-
-            // 2. CREATE NEW (No cloning, no DOM hacks)
+            // 2. CREATE NEW
             window.psycheChart = new Chart(ctx, {
                 type: 'radar',
                 data: {
@@ -51262,7 +51265,7 @@
                     datasets: [
                        {
                             label: 'You',
-                            data: Object.values(GameState.player.psych),
+                            data: UI.getPsycheData(GameState.player.psych),
                             backgroundColor: 'rgba(255, 255, 255, 0.1)',
                             borderColor: '#fff',
                             pointRadius: 0, borderWidth: 1,
