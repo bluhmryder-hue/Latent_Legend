@@ -734,25 +734,27 @@ export async function runInit(
     if (config.iconLibrary) designSettings.iconLibrary = config.iconLibrary
 
     if (Object.keys(designSettings).length > 0) {
-      for (const key of Object.keys(workspaceConfig)) {
-        const wsConfig = workspaceConfig[key]
-        if (wsConfig.resolvedPaths.cwd === fullConfig.resolvedPaths.cwd) {
-          continue
-        }
+      await Promise.all(
+        Object.keys(workspaceConfig).map(async (key) => {
+          const wsConfig = workspaceConfig[key]
+          if (wsConfig.resolvedPaths.cwd === fullConfig.resolvedPaths.cwd) {
+            return
+          }
 
-        const wsConfigPath = path.resolve(
-          wsConfig.resolvedPaths.cwd,
-          "components.json"
-        )
-        if (fsExtra.existsSync(wsConfigPath)) {
-          const wsRawConfig = await fsExtra.readJson(wsConfigPath)
-          await fsExtra.writeJson(
-            wsConfigPath,
-            { ...wsRawConfig, ...designSettings },
-            { spaces: 2 }
+          const wsConfigPath = path.resolve(
+            wsConfig.resolvedPaths.cwd,
+            "components.json"
           )
-        }
-      }
+          if (fsExtra.existsSync(wsConfigPath)) {
+            const wsRawConfig = await fsExtra.readJson(wsConfigPath)
+            await fsExtra.writeJson(
+              wsConfigPath,
+              { ...wsRawConfig, ...designSettings },
+              { spaces: 2 }
+            )
+          }
+        })
+      )
     }
   }
 
