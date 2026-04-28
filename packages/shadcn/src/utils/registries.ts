@@ -21,18 +21,27 @@ export async function ensureRegistriesInConfig(
     ...options,
   }
 
+  let updatedConfig = {
+    ...config,
+    registries: filterBuiltinRegistries(config.registries),
+  }
+
   // Use resolveRegistryNamespaces to discover all namespaces including dependencies.
-  const registryNames = await resolveRegistryNamespaces(components, config)
+  const registryNames = await resolveRegistryNamespaces(components, updatedConfig)
 
   const missingRegistries = registryNames.filter(
     (registry) =>
-      !config.registries?.[registry] &&
+      !updatedConfig.registries?.[registry] &&
       !Object.keys(BUILTIN_REGISTRIES).includes(registry)
   )
 
   if (missingRegistries.length === 0) {
+    if (options.writeFile) {
+      await writeConfig(updatedConfig, options.silent)
+    }
+
     return {
-      config,
+      config: updatedConfig,
       newRegistries: [],
     }
   }
@@ -44,8 +53,11 @@ export async function ensureRegistriesInConfig(
   })
 
   if (!registryIndex) {
+    if (options.writeFile) {
+      await writeConfig(updatedConfig, options.silent)
+    }
     return {
-      config,
+      config: updatedConfig,
       newRegistries: [],
     }
   }
@@ -58,44 +70,51 @@ export async function ensureRegistriesInConfig(
   }
 
   if (Object.keys(foundRegistries).length === 0) {
+    if (options.writeFile) {
+      await writeConfig(updatedConfig, options.silent)
+    }
     return {
-      config,
+      config: updatedConfig,
       newRegistries: [],
     }
   }
 
-  // Filter out built-in registries from existing config before merging
-  const existingRegistries = Object.fromEntries(
-    Object.entries(config.registries || {}).filter(
-      ([key]) => !Object.keys(BUILTIN_REGISTRIES).includes(key)
-    )
-  )
-
-  const newConfigWithRegistries = {
-    ...config,
+  updatedConfig = {
+    ...updatedConfig,
     registries: {
-      ...existingRegistries,
+      ...updatedConfig.registries,
       ...foundRegistries,
     },
   }
 
   if (options.writeFile) {
-    const { resolvedPaths, ...configWithoutResolvedPaths } =
-      newConfigWithRegistries
-    const configSpinner = spinner("Updating components.json.", {
-      silent: options.silent,
-    }).start()
-    const updatedConfig = rawConfigSchema.parse(configWithoutResolvedPaths)
-    await fs.writeFile(
-      path.resolve(config.resolvedPaths.cwd, "components.json"),
-      JSON.stringify(updatedConfig, null, 2) + "\n",
-      "utf-8"
-    )
-    configSpinner.succeed()
+    await writeConfig(updatedConfig, options.silent)
   }
 
   return {
-    config: newConfigWithRegistries,
+    config: updatedConfig,
     newRegistries: Object.keys(foundRegistries),
   }
+}
+
+function filterBuiltinRegistries(registries: Config["registries"]) {
+  return Object.fromEntries(
+    Object.entries(registries || {}).filter(
+      ([key]) => !Object.keys(BUILTIN_REGISTRIES).includes(key)
+    )
+  )
+}
+
+async function writeConfig(config: Config, silent: boolean = false) {
+  const { resolvedPaths, ...configWithoutResolvedPaths } = config
+  const configSpinner = spinner("Updating components.json.", {
+    silent,
+  }).start()
+  const updatedConfig = rawConfigSchema.parse(configWithoutResolvedPaths)
+  await fs.writeFile(
+    path.resolve(config.resolvedPaths.cwd, "components.json"),
+    JSON.stringify(updatedConfig, null, 2) + "\n",
+    "utf-8"
+  )
+  configSpinner.succeed()
 }
