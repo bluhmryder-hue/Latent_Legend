@@ -1,0 +1,3 @@
+## 2026-04-28 - [SentientQuest Accessibility & Focus Patterns]
+**Learning:** In a dense, icon-heavy simulation interface, icon-only buttons (header controls, modal dismissals) significantly hinder accessibility for screen readers. Additionally, the lack of `:focus-visible` styles makes keyboard navigation nearly impossible in a dark-themed UI.
+**Action:** Always provide descriptive `aria-label` attributes for icon-only buttons. Use `:focus-visible` with the themed accent color and an `outline-offset` to ensure interactive elements are discoverable via keyboard without compromising the visual aesthetic.
