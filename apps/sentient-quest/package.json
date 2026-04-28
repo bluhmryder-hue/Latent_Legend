@@ -21,8 +21,11 @@
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "postcss": "^8",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "vitest": "^2.1.9",
+    "@vitejs/plugin-react": "^4.3.4",
+    "happy-dom": "^15.11.7"
   },
-  "_last_modified": "2026-04-26T20:48:15Z",
-  "_timestamp": "2026-04-26T20:48:15Z"
+  "_last_modified": "2026-04-28T07:12:05Z",
+  "_timestamp": "2026-04-28T07:12:05Z"
 }
