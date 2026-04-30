@@ -1,3 +1,8 @@
+export const metadata = {
+  title: 'SentientQuest',
+  description: 'An Emergent Simulation',
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -17,3 +22,5 @@ export default function RootLayout({
     </html>
   )
 }
+
+/* Last Modified: 2026-05-20T12:00:00Z */

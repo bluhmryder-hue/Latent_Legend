@@ -1,4 +1,4 @@
-<!-- SentientQuest: Animus Engine | Last Modified: 2026-04-26T17:07:24Z
+<!-- SentientQuest: Animus Engine | Last Modified: 2026-05-20T12:00:00Z
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -15,7 +15,7 @@
 
 <div id="genesis-modal" class="modal-overlay active" style="background: #000;">
     <div class="genesis-box">
-        <button class="settings-close-btn" onclick="UI.toggleSettings()">
+        <button class="settings-close-btn" onclick="UI.toggleSettings()" aria-label="Close settings">
             <i class="fa-solid fa-xmark"></i>
         </button>
 
@@ -72,10 +72,10 @@
                         <select id="gen-scenario-select" class="gen-input" style="flex:1;" onchange="UI.applyScenario()">
                             <option value="">-- Load Scenario --</option>
                         </select>
-                        <button class="icon-btn" onclick="UI.saveScenario()" title="Save Preset" style="border:1px solid #444;">
+                        <button class="icon-btn" onclick="UI.saveScenario()" title="Save Preset" aria-label="Save scenario preset" style="border:1px solid #444;">
                             <i class="fa-solid fa-floppy-disk"></i>
                         </button>
-                        <button class="icon-btn" onclick="UI.deleteScenario()" title="Delete Preset" style="border:1px solid #444; color:var(--dis-red);">
+                        <button class="icon-btn" onclick="UI.deleteScenario()" title="Delete Preset" aria-label="Delete scenario preset" style="border:1px solid #444; color:var(--dis-red);">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
@@ -120,7 +120,7 @@
                     <span class="setting-label">Select Role to Edit</span>
                     <div style="display: flex; gap: 5px;">
                         <select id="uniform-selector" class="gen-input" onchange="UI.loadUniform(this.value)" style="flex: 1;"></select>
-                        <button class="icon-btn" onclick="UI.regenerateCurrentTemplate()" title="Reset to Template" style="border: 1px solid #444;"><i class="fa-solid fa-rotate-left"></i></button>
+                        <button class="icon-btn" onclick="UI.regenerateCurrentTemplate()" title="Reset to Template" aria-label="Reset uniform to template" style="border: 1px solid #444;"><i class="fa-solid fa-rotate-left"></i></button>
                     </div>
                 </div>
                 <div class="setting-row">
@@ -263,13 +263,13 @@
         <div id="chronos-bar"></div>
     </div>
     <div class="header-controls">
-        <button class="icon-btn" onclick="UI.toggleGrimoire()" title="Grimoire (Known Entities)"><i class="fa-solid fa-book-journal-whills"></i></button>
-        <button class="icon-btn" id="btn-gallery" onclick="UI.toggleGallery()" title="Visual Archives"><i class="fa-solid fa-images"></i></button>
-        <button class="icon-btn" onclick="UI.toggleSettings()" title="Settings"><i class="fa-solid fa-gear"></i></button>
-        <button class="icon-btn" onclick="Persistence.saveGame()" title="Save Reality"><i class="fa-solid fa-floppy-disk"></i></button>
-        <button class="icon-btn" onclick="UI.toggleChat()" title="Commune (Global Chat)"><i class="fa-solid fa-comments"></i></button>
-        <button class="icon-btn" onclick="UI.toggleTelemetry()" title="AI Job Monitor"><i class="fa-solid fa-tower-observation"></i></button>
-        <button class="icon-btn" onclick="UI.toggleHelp()" title="Help"><i class="fa-solid fa-circle-question"></i></button>
+        <button class="icon-btn" onclick="UI.toggleGrimoire()" title="Grimoire (Known Entities)" aria-label="Open Grimoire"><i class="fa-solid fa-book-journal-whills"></i></button>
+        <button class="icon-btn" id="btn-gallery" onclick="UI.toggleGallery()" title="Visual Archives" aria-label="Open Visual Archives"><i class="fa-solid fa-images"></i></button>
+        <button class="icon-btn" onclick="UI.toggleSettings()" title="Settings" aria-label="Open Settings"><i class="fa-solid fa-gear"></i></button>
+        <button class="icon-btn" onclick="Persistence.saveGame()" title="Save Reality" aria-label="Save Reality"><i class="fa-solid fa-floppy-disk"></i></button>
+        <button class="icon-btn" onclick="UI.toggleChat()" title="Commune (Global Chat)" aria-label="Open Spirit Commune"><i class="fa-solid fa-comments"></i></button>
+        <button class="icon-btn" onclick="UI.toggleTelemetry()" title="AI Job Monitor" aria-label="Open AI Job Monitor"><i class="fa-solid fa-tower-observation"></i></button>
+        <button class="icon-btn" onclick="UI.toggleHelp()" title="Help" aria-label="Open Help"><i class="fa-solid fa-circle-question"></i></button>
     </div>
 </header>
 
@@ -391,7 +391,7 @@
     <div class="modal-box">
         <div class="modal-header">
             <span>The Animus Protocol</span>
-            <button class="icon-btn" onclick="UI.toggleHelp()">&times;</button>
+            <button class="icon-btn" onclick="UI.toggleHelp()" aria-label="Close help">&times;</button>
         </div>
         <div class="modal-content">
             <div class="help-section">
@@ -478,7 +478,7 @@
 <div class="modal-box" id="chat-modal" style="display: none; position: fixed; top: 80px; right: 40px; height: 600px; width: 400px; max-width: 95vw; z-index: 998; box-shadow: 0 0 30px rgba(0,0,0,0.8); resize: both; overflow: hidden; min-width: 300px; min-height: 300px;">
     <div class="modal-header" id="chat-header" style="border-color: #00d4ff; cursor: move; background: rgba(15, 15, 20, 0.95);">
         <span style="color: #00d4ff; pointer-events: none;"><i class="fa-solid fa-comments"></i> Spirit Commune</span>
-        <button class="icon-btn" onclick="UI.toggleChat()">&times;</button>
+        <button class="icon-btn" onclick="UI.toggleChat()" aria-label="Close chat">&times;</button>
     </div>
     <div class="modal-content" style="padding: 0; background: #1a1a2e; overflow: hidden; display: flex; flex-direction: column; flex: 1;">
         [commentsPlugin(ChatOptions)]
@@ -494,8 +494,8 @@
             </span>
         </div>
         <div style="display: flex; gap: 5px;">
-            <button class="icon-btn dev-only" onclick="UI.toggleDevSanctum()" title="Architect's Sanctum"><i class="fa-solid fa-code"></i></button>
-            <button class="icon-btn" onclick="UI.toggleTelemetry()">&times;</button>
+            <button class="icon-btn dev-only" onclick="UI.toggleDevSanctum()" title="Architect's Sanctum" aria-label="Open Architect's Sanctum"><i class="fa-solid fa-code"></i></button>
+            <button class="icon-btn" onclick="UI.toggleTelemetry()" aria-label="Close telemetry monitor">&times;</button>
         </div>
     </div>
     <div id="telemetry-log-viewer" class="modal-content" style="padding: 15px; background: rgba(10, 10, 15, 0.95); overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
@@ -509,10 +509,10 @@
     <div class="modal-header" id="gallery-header" style="cursor: move;">
         <span style="pointer-events: none;">Visual Archives <span id="gal-capacity" style="font-size:0.7rem; color:#666; margin-left:10px;">(0/100)</span></span>
         <div style="display:flex; gap:10px;">
-            <button class="icon-btn" onclick="GallerySystem.clean()" title="Purge Unlocked & Unused" style="color:var(--dis-red); border-color:var(--dis-red); font-size:0.8rem;">
+            <button class="icon-btn" onclick="GallerySystem.clean()" title="Purge Unlocked & Unused" aria-label="Purge unused images" style="color:var(--dis-red); border-color:var(--dis-red); font-size:0.8rem;">
                 <i class="fa-solid fa-trash-can-arrow-up"></i> Purge
             </button>
-            <button class="icon-btn" onclick="UI.toggleGallery()">&times;</button>
+            <button class="icon-btn" onclick="UI.toggleGallery()" aria-label="Close visual archives">&times;</button>
         </div>
     </div>
     <div class="modal-content" style="background: rgba(0,0,0,0.2); padding: 15px; display:flex; flex-direction:column; flex:1; height:100%;">
@@ -524,7 +524,7 @@
 <div class="modal-box" id="grimoire-modal" style="display: none; position: fixed; top: 50px; left: 50px; width: 800px; height: 80vh; max-width: 95vw; z-index: 996; box-shadow: 0 0 30px rgba(0,0,0,0.8); resize: both; overflow: hidden; min-width: 400px; min-height: 300px;">
     <div class="modal-header" id="grim-header-bar" style="cursor: move;">
         <span style="pointer-events: none;">The Grimoire</span>
-        <button class="icon-btn" onclick="UI.toggleGrimoire()">&times;</button>
+        <button class="icon-btn" onclick="UI.toggleGrimoire()" aria-label="Close grimoire">&times;</button>
     </div>
 
     <div class="modal-content" style="background: rgba(0,0,0,0.2); display:flex; flex-direction:column; padding:0; position: relative; flex: 1; height: 100%;">
@@ -563,7 +563,7 @@
         <img id="inspector-img" src="" style="max-width: 100%; max-height: 80vh; border: 1px solid var(--theme-accent); box-shadow: 0 0 50px rgba(0,0,0,0.8);">
         <div id="inspector-meta" style="background: rgba(0,0,0,0.8); padding: 10px; color: #aaa; font-size: 0.9rem; margin-top: 5px; text-align: center;"></div>
         <button class="icon-btn" style="position: absolute;
-                top: -40px; right: 0; font-size: 1.5rem;" onclick="UI.closeInspector()">&times;</button>
+                top: -40px; right: 0; font-size: 1.5rem;" onclick="UI.closeInspector()" aria-label="Close inspector">&times;</button>
         <button id="btn-regen-inspector" class="gen-btn-secondary" style="width: 100%;
                 margin-top: 10px;" onclick="UI.regenerateInspected()">
             <i class="fa-solid fa-rotate"></i> Dream Again (Regenerate)
