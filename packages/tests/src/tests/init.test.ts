@@ -600,7 +600,7 @@ describe("shadcn init - next-monorepo", () => {
     // Build a custom init URL with specific options.
     const registryUrl = process.env.REGISTRY_URL || "http://localhost:4000/r"
     const baseUrl = registryUrl.replace(/\/r\/?$/, "")
-    const initUrl = `${baseUrl}/init?base=radix&style=nova&baseColor=zinc&theme=zinc&iconLibrary=lucide&font=inter&rtl=false&menuAccent=subtle&menuColor=default&radius=default&template=next`
+    const initUrl = `${baseUrl}/init?base=radix&style=nova&baseColor=neutral&theme=neutral&iconLibrary=lucide&font=inter&rtl=false&menuAccent=subtle&menuColor=default&radius=default&template=next`
 
     const result = await npxShadcn(
       testBaseDir,
@@ -635,7 +635,7 @@ describe("shadcn init - next-monorepo", () => {
     expect(webConfig.style).toBe("radix-nova")
     expect(webConfig.tailwind.baseColor).toBe("neutral")
 
-    // Verify CSS has zinc color theme applied.
+    // Verify CSS has neutral color theme applied.
     const cssPath = path.join(projectPath, "packages/ui/src/styles/globals.css")
     const cssContent = await fs.readFile(cssPath, "utf-8")
     expect(cssContent).toContain(":root")
@@ -729,7 +729,7 @@ describe("shadcn init - existing components.json", () => {
       style: "default",
       tailwind: {
         css: "app/globals.css",
-        baseColor: "zinc",
+        baseColor: "neutral",
         cssVariables: false,
       },
       rsc: true,

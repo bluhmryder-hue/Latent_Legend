@@ -1,0 +1,12 @@
+
+> sentient-quest@0.1.0 dev /app/apps/sentient-quest
+> next dev
+
+ ⚠ Port 3000 is in use, trying 3001 instead.
+  ▲ Next.js 14.2.3
+  - Local:        http://localhost:3001
+
+ ✓ Starting...
+ ✓ Ready in 3.5s
+ ELIFECYCLE  Command failed.
+[?25h
