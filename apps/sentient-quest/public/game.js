@@ -1,5 +1,5 @@
-// Last Modified: 2026-04-26T17:07:24Z
-// Timestamp: 2026-04-26T17:07:24Z
+// Last Modified: 2026-05-02T08:21:14Z
+// Timestamp: 2026-05-02T08:21:14Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -44709,6 +44709,15 @@
 
             document.getElementById('player-input').addEventListener('keydown', (e) => {
                 if(e.key === 'Enter') this.submit();
+            });
+
+            // Global Keyboard Shortcuts
+            document.addEventListener('keydown', (e) => {
+                // Ctrl+S or Cmd+S for Saving Reality
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    Persistence.saveGame();
+                }
             });
             UI.initCommandDeck();
             UI.updateCommandDeck();
