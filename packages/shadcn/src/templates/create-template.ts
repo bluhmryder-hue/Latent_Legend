@@ -127,6 +127,9 @@ async function adaptWorkspaceConfig(
   if (fs.existsSync(packageJsonPath)) {
     const packageJsonContent = await fs.readFile(packageJsonPath, "utf8")
     const packageJson = JSON.parse(packageJsonContent)
+
+    // ALWAYS delete packageManager to avoid Corepack issues when
+    // the user's PM version differs from the template's.
     delete packageJson.packageManager
 
     if (isMonorepo && packageManager !== "pnpm") {
@@ -169,9 +172,12 @@ async function rewriteWorkspaceProtocol(dir: string) {
       await rewriteWorkspaceProtocol(fullPath)
     } else if (entry.name === "package.json") {
       const content = await fs.readFile(fullPath, "utf8")
-      if (!content.includes("workspace:")) continue
       const pkg = JSON.parse(content)
-      let changed = false
+
+      // Also delete packageManager from nested package.json files just in case.
+      delete pkg.packageManager
+
+      let changed = true // Force rewrite to remove packageManager if it existed
       for (const depKey of [
         "dependencies",
         "devDependencies",
