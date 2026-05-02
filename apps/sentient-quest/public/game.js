@@ -1,5 +1,5 @@
-// Last Modified: 2026-04-26T17:07:24Z
-// Timestamp: 2026-04-26T17:07:24Z
+// Last Modified: 2026-05-01T08:11:40Z
+// Timestamp: 2026-05-01T08:11:40Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -49475,7 +49475,7 @@
             box.innerHTML = `
                 <div class="modal-header" id="dev-sanctum-header" style="cursor: move; padding: 10px; background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--theme-accent); display: flex; justify-content: space-between; align-items: center;">
                     <span style="color: var(--theme-accent); font-family: var(--font-header); font-variant: small-caps;"><i class="fa-solid fa-code"></i> Architect's Sanctum</span>
-                    <button class="icon-btn" onclick="this.parentElement.parentElement.remove()">&times;</button>
+                    <button class="icon-btn" onclick="this.parentElement.parentElement.remove()" aria-label="Close">&times;</button>
                 </div>
                 <div class="modal-content" style="padding: 15px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; max-height: 70vh;">
 
@@ -50169,7 +50169,7 @@
             div.innerHTML = `
                 <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #333; padding-bottom:10px;">
                     <span style="color:var(--theme-accent); font-family:var(--font-header); font-variant:small-caps;">Payload Inspector: ${job.systemContext || 'Image Gen'}</span>
-                    <button class="icon-btn" onclick="this.parentElement.parentElement.remove()" style="color:#aaa;"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="icon-btn" onclick="this.parentElement.parentElement.remove()" style="color:#aaa;" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <textarea class="gen-input" style="flex:1; resize:none; font-family:monospace; font-size:0.8rem; padding:10px; background:rgba(0,0,0,0.3);" readonly>${Utils.escapeHTML(promptText)}</textarea>
             `;
@@ -50889,7 +50889,7 @@
 
             overlay.innerHTML = `
                 <div style="position:relative; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center;">
-                    <button class="icon-btn" style="position: absolute; top: 20px; right: 30px; font-size: 2.5rem; color: #fff; text-shadow: 0 0 10px #000; z-index: 10001;" onclick="this.parentElement.parentElement.remove()">&times;</button>
+                    <button class="icon-btn" style="position: absolute; top: 20px; right: 30px; font-size: 2.5rem; color: #fff; text-shadow: 0 0 10px #000; z-index: 10001;" onclick="this.parentElement.parentElement.remove()" aria-label="Close">&times;</button>
                     <div style="animation: slideUpFade 0.3s ease-out; width: 100%; display: flex; justify-content: center; padding: 20px;">
                         ${modalHtml}
                     </div>
