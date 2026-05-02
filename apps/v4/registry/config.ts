@@ -371,7 +371,7 @@ export function getThemesForBaseColor(baseColorName: string) {
   const baseColorNames = BASE_COLORS.map((bc) => bc.name)
 
   return THEMES.filter((theme) => {
-    if (theme.name === baseColorName) {
+    if (theme.name === baseColorName || theme.name === "neutral") {
       return true
     }
     return !baseColorNames.includes(theme.name)

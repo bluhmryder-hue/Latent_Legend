@@ -549,7 +549,7 @@ describe("shadcn init - next-monorepo", () => {
         "--base",
         "radix",
       ],
-      { timeout: 300000, debug: true }
+      { timeout: 300000 }
     )
     expect(result.exitCode).toBe(0)
 

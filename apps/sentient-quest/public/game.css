@@ -1,4 +1,4 @@
-/* Last Modified: 2026-04-26T17:07:24Z
+/* Last Modified: 2026-05-20T12:00:00Z
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Creepster&family=Nosifer&family=Dancing+Script:wght@400;700&family=Indie+Flower&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Orbitron:wght@400;700&family=Oswald:wght@400;700&family=Patrick+Hand&family=Playfair+Display:wght@400;700&family=Roboto+Mono:wght@400;700&family=Special+Elite&family=Courier+Prime&family=MedievalSharp&family=Architects+Daughter&family=Share+Tech+Mono&family=Great+Vibes&family=Tinos&family=Press+Start+2P&family=Sacramento&family=Bangers&family=Amatic+SC:wght@400;700&family=Lobster&family=Abril+Fatface&family=Shadows+Into+Light&family=Righteous&family=Monoton&family=Permanent+Marker&family=Philosopher&family=Didot&family=Allura&family=Rye&family=Rubik+Glitch&family=Butcherman&family=UnifrakturMaguntia&display=swap');
     :root {
         --theme-bg: #121212;
@@ -995,6 +995,14 @@
     }
 
   /* --- OBSIDIAN LAB POLISH --- */
+
+    /* 0. ACCESSIBILITY: FOCUS STATES */
+    /* Ensure clear visual feedback for keyboard users */
+    :focus-visible {
+        outline: 2px solid var(--theme-accent);
+        outline-offset: 2px;
+        box-shadow: 0 0 0 4px rgba(162, 155, 254, 0.3);
+    }
 
     /* 1. NEUTRAL SCROLLBARS */
     /* Make the container feel like a singular machine, not a web page */

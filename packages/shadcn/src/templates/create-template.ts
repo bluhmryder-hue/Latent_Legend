@@ -109,29 +109,30 @@ async function adaptWorkspaceConfig(
   projectPath: string,
   packageManager: string
 ) {
-  if (packageManager === "pnpm") {
-    return
-  }
-
   const pnpmWorkspacePath = path.join(projectPath, "pnpm-workspace.yaml")
   const packageJsonPath = path.join(projectPath, "package.json")
 
-  // Remove pnpm-lock.yaml.
-  const lockFilePath = path.join(projectPath, "pnpm-lock.yaml")
-  if (fs.existsSync(lockFilePath)) {
-    await fs.remove(lockFilePath)
+  // Remove pnpm-lock.yaml for non-pnpm package managers.
+  if (packageManager !== "pnpm") {
+    const lockFilePath = path.join(projectPath, "pnpm-lock.yaml")
+    if (fs.existsSync(lockFilePath)) {
+      await fs.remove(lockFilePath)
+    }
   }
 
   const isMonorepo = fs.existsSync(pnpmWorkspacePath)
 
   // Update root package.json: strip "packageManager" field to avoid
-  // triggering Corepack, and add "workspaces" for npm/bun/yarn.
+  // triggering Corepack version mismatches, and add "workspaces" for npm/bun/yarn.
   if (fs.existsSync(packageJsonPath)) {
     const packageJsonContent = await fs.readFile(packageJsonPath, "utf8")
     const packageJson = JSON.parse(packageJsonContent)
+
+    // ALWAYS delete packageManager to avoid Corepack issues when
+    // the user's PM version differs from the template's.
     delete packageJson.packageManager
 
-    if (isMonorepo) {
+    if (isMonorepo && packageManager !== "pnpm") {
       // Read workspace patterns from pnpm-workspace.yaml.
       const workspaceContent = await fs.readFile(pnpmWorkspacePath, "utf8")
       const patterns: string[] = []
@@ -171,9 +172,12 @@ async function rewriteWorkspaceProtocol(dir: string) {
       await rewriteWorkspaceProtocol(fullPath)
     } else if (entry.name === "package.json") {
       const content = await fs.readFile(fullPath, "utf8")
-      if (!content.includes("workspace:")) continue
       const pkg = JSON.parse(content)
-      let changed = false
+
+      // Also delete packageManager from nested package.json files just in case.
+      delete pkg.packageManager
+
+      let changed = true // Force rewrite to remove packageManager if it existed
       for (const depKey of [
         "dependencies",
         "devDependencies",

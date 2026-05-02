@@ -1,0 +1,3 @@
+## 2026-05-20 - [Accessibility Gaps in Icon-Only Elements]
+**Learning:** The application extensively uses FontAwesome icons for interactive controls (header buttons, close buttons, action presets) without providing text alternatives. This renders key functionality inaccessible to screen reader users and obscures the purpose of controls in the "Glassmorphism" UI where visual cues can be subtle.
+**Action:** Always pair icon-only buttons with descriptive `aria-label` attributes and ensure global `focus-visible` styles are implemented to support keyboard-only navigation, especially in complex, simulation-heavy interfaces like SentientQuest.
