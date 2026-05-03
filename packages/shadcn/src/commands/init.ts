@@ -660,21 +660,6 @@ export async function runInit(
     }
   }
 
-  // Ensure registries are configured for the components we're about to add.
-  const fullConfigForRegistry = await resolveConfigPaths(options.cwd, config)
-  const { config: configWithRegistries } = await ensureRegistriesInConfig(
-    components,
-    fullConfigForRegistry,
-    {
-      silent: true,
-    }
-  )
-
-  // Update config with any new registries found.
-  if (configWithRegistries.registries) {
-    config.registries = configWithRegistries.registries
-  }
-
   const componentSpinner = spinner(`Writing components.json.`).start()
   const targetPath = path.resolve(options.cwd, "components.json")
   const backupPath = `${targetPath}${FILE_BACKUP_SUFFIX}`
@@ -711,16 +696,19 @@ export async function runInit(
     config.rtl = options.rtl
   }
 
-  // Make sure to filter out built-in registries.
-  // TODO: fix this in ensureRegistriesInConfig.
-  config.registries = Object.fromEntries(
-    Object.entries(config.registries || {}).filter(
-      ([key]) => !Object.keys(BUILTIN_REGISTRIES).includes(key)
-    )
+  // Ensure registries are configured for the components we're about to add.
+  // This also handles filtering out built-in registries.
+  const fullConfigForRegistry = await resolveConfigPaths(options.cwd, config)
+  const { config: configWithRegistries } = await ensureRegistriesInConfig(
+    components,
+    fullConfigForRegistry,
+    {
+      silent: true,
+      writeFile: true,
+    }
   )
+  config = configWithRegistries
 
-  // Write components.json.
-  await fs.writeFile(targetPath, `${JSON.stringify(config, null, 2)}\n`, "utf8")
   componentSpinner.succeed()
 
   // Propagate design settings to workspace components.json files.
