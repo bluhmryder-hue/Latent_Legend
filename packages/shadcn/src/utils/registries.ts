@@ -21,10 +21,7 @@ export async function ensureRegistriesInConfig(
     ...options,
   }
 
-  let updatedConfig = {
-    ...config,
-    registries: filterBuiltinRegistries(config.registries),
-  }
+  let updatedConfig = { ...config }
 
   // Use resolveRegistryNamespaces to discover all namespaces including dependencies.
   const registryNames = await resolveRegistryNamespaces(components, updatedConfig)
@@ -35,57 +32,35 @@ export async function ensureRegistriesInConfig(
       !Object.keys(BUILTIN_REGISTRIES).includes(registry)
   )
 
-  if (missingRegistries.length === 0) {
-    if (options.writeFile) {
-      await writeConfig(updatedConfig, options.silent)
-    }
+  if (missingRegistries.length > 0) {
+    // We'll fail silently if we can't fetch the registry index.
+    // The error handling by caller will guide user to add the missing registries.
+    const registryIndex = await getRegistriesIndex({
+      useCache: process.env.NODE_ENV !== "development",
+    })
 
-    return {
-      config: updatedConfig,
-      newRegistries: [],
+    if (registryIndex) {
+      const foundRegistries: Record<string, string> = {}
+      for (const registry of missingRegistries) {
+        if (registryIndex[registry]) {
+          foundRegistries[registry] = registryIndex[registry]
+        }
+      }
+
+      if (Object.keys(foundRegistries).length > 0) {
+        updatedConfig = {
+          ...updatedConfig,
+          registries: {
+            ...updatedConfig.registries,
+            ...foundRegistries,
+          },
+        }
+      }
     }
   }
 
-  // We'll fail silently if we can't fetch the registry index.
-  // The error handling by caller will guide user to add the missing registries.
-  const registryIndex = await getRegistriesIndex({
-    useCache: process.env.NODE_ENV !== "development",
-  })
-
-  if (!registryIndex) {
-    if (options.writeFile) {
-      await writeConfig(updatedConfig, options.silent)
-    }
-    return {
-      config: updatedConfig,
-      newRegistries: [],
-    }
-  }
-
-  const foundRegistries: Record<string, string> = {}
-  for (const registry of missingRegistries) {
-    if (registryIndex[registry]) {
-      foundRegistries[registry] = registryIndex[registry]
-    }
-  }
-
-  if (Object.keys(foundRegistries).length === 0) {
-    if (options.writeFile) {
-      await writeConfig(updatedConfig, options.silent)
-    }
-    return {
-      config: updatedConfig,
-      newRegistries: [],
-    }
-  }
-
-  updatedConfig = {
-    ...updatedConfig,
-    registries: {
-      ...updatedConfig.registries,
-      ...foundRegistries,
-    },
-  }
+  // Filter out built-in registries before returning/writing.
+  updatedConfig.registries = filterBuiltinRegistries(updatedConfig.registries)
 
   if (options.writeFile) {
     await writeConfig(updatedConfig, options.silent)
@@ -93,7 +68,9 @@ export async function ensureRegistriesInConfig(
 
   return {
     config: updatedConfig,
-    newRegistries: Object.keys(foundRegistries),
+    newRegistries: Object.keys(updatedConfig.registries || {}).filter(
+      (key) => !config.registries?.[key]
+    ),
   }
 }
 
