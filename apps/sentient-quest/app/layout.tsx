@@ -1,3 +1,10 @@
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'SentientQuest',
+  description: 'An experimental, agentic-powered game environment.',
+}
+
 export default function RootLayout({
   children,
 }: {
