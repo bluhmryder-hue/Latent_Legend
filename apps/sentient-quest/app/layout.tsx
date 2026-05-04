@@ -1,3 +1,12 @@
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "SentientQuest",
+  description: "An emergent simulation of psychological manifestation.",
+}
+
+/* Last Modified: 2026-05-15T12:00:00Z */
+
 export default function RootLayout({
   children,
 }: {
