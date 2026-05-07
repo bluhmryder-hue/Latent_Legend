@@ -1,0 +1,3 @@
+## 2026-04-26 - Accessible Icon Buttons
+**Learning:** In complex, high-interactivity simulations like SentientQuest, `title` attributes alone are insufficient for accessibility. While `title` provides a tooltip for mouse users, `aria-label` is critical for screen reader support on icon-only buttons to ensure users understand the button's function without visual context.
+**Action:** Always pair `title` with a matching or descriptive `aria-label` on all `icon-btn` elements. Additionally, ensure interactive elements have `:focus-visible` styles to provide clear visual feedback for keyboard-only navigation.

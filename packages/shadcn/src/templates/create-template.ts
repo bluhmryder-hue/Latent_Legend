@@ -255,7 +255,7 @@ function defaultScaffold({
       // Run install.
       const installArgs = getInstallArgs(packageManager)
       const args = ["install", ...installArgs]
-      await execa(packageManager, args, {
+      await execa(packageManager, args, { env: { ...process.env, COREPACK_ENABLE_STRICT: "0" },
         cwd: projectPath,
       })
 
