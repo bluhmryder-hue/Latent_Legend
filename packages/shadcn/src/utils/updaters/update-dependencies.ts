@@ -124,14 +124,20 @@ async function installWithPackageManager(
     return installWithExpo(dependencies, devDependencies, cwd)
   }
 
+  const env = { ...process.env, COREPACK_ENABLE_STRICT: "0" }
+
   if (dependencies?.length) {
     await execa(packageManager, ["add", ...dependencies], {
       cwd,
+      env,
     })
   }
 
   if (devDependencies?.length) {
-    await execa(packageManager, ["add", "-D", ...devDependencies], { cwd })
+    await execa(packageManager, ["add", "-D", ...devDependencies], {
+      cwd,
+      env,
+    })
   }
 }
 
