@@ -55,7 +55,8 @@ export default function Page() {
           options.registryBaseConfig
         )
       }
-      packagesUiConfig.tailwind.baseColor = options.registryBaseConfig?.tailwind?.baseColor ?? "neutral"
+      packagesUiConfig.tailwind.baseColor =
+        (options.registryBaseConfig as any)?.tailwind?.baseColor ?? "neutral"
       if (options.rtl) {
         packagesUiConfig.rtl = true
       }
@@ -69,7 +70,8 @@ export default function Page() {
       if (options.registryBaseConfig) {
         appsWebConfig = deepmerge(appsWebConfig, options.registryBaseConfig)
       }
-      appsWebConfig.tailwind.baseColor = options.registryBaseConfig?.tailwind?.baseColor ?? "neutral"
+      appsWebConfig.tailwind.baseColor =
+        (options.registryBaseConfig as any)?.tailwind?.baseColor ?? "neutral"
       if (options.rtl) {
         appsWebConfig.rtl = true
       }
