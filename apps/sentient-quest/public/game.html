@@ -263,19 +263,19 @@
         <div id="chronos-bar"></div>
     </div>
     <div class="header-controls">
-        <button class="icon-btn" onclick="UI.toggleGrimoire()" title="Grimoire (Known Entities)"><i class="fa-solid fa-book-journal-whills"></i></button>
-        <button class="icon-btn" id="btn-gallery" onclick="UI.toggleGallery()" title="Visual Archives"><i class="fa-solid fa-images"></i></button>
-        <button class="icon-btn" onclick="UI.toggleSettings()" title="Settings"><i class="fa-solid fa-gear"></i></button>
-        <button class="icon-btn" onclick="Persistence.saveGame()" title="Save Reality"><i class="fa-solid fa-floppy-disk"></i></button>
-        <button class="icon-btn" onclick="UI.toggleChat()" title="Commune (Global Chat)"><i class="fa-solid fa-comments"></i></button>
-        <button class="icon-btn" onclick="UI.toggleTelemetry()" title="AI Job Monitor"><i class="fa-solid fa-tower-observation"></i></button>
-        <button class="icon-btn" onclick="UI.toggleHelp()" title="Help"><i class="fa-solid fa-circle-question"></i></button>
+        <button class="icon-btn" onclick="UI.toggleGrimoire()" title="Grimoire (G)" aria-label="Open Grimoire"><i class="fa-solid fa-book-journal-whills"></i></button>
+        <button class="icon-btn" id="btn-gallery" onclick="UI.toggleGallery()" title="Visual Archives (V)" aria-label="Open Visual Archives"><i class="fa-solid fa-images"></i></button>
+        <button class="icon-btn" onclick="UI.toggleSettings()" title="Settings (S)" aria-label="Open Settings"><i class="fa-solid fa-gear"></i></button>
+        <button class="icon-btn" onclick="Persistence.saveGame()" title="Save Reality (C)" aria-label="Save Reality"><i class="fa-solid fa-floppy-disk"></i></button>
+        <button class="icon-btn" onclick="UI.toggleChat()" title="Commune (T)" aria-label="Open Global Chat"><i class="fa-solid fa-comments"></i></button>
+        <button class="icon-btn" onclick="UI.toggleTelemetry()" title="AI Job Monitor (M)" aria-label="Open AI Job Monitor"><i class="fa-solid fa-tower-observation"></i></button>
+        <button class="icon-btn" onclick="UI.toggleHelp()" title="Help (H)" aria-label="Open Help"><i class="fa-solid fa-circle-question"></i></button>
     </div>
 </header>
 
 <div id="app-container">
     <div id="stage-panel">
-        <div id="narrative-log">
+        <div id="narrative-log" aria-live="polite" role="log">
             <div class="log-entry" style="color: var(--text-dim); font-style: italic;">
                 System Initialized. Awaiting manifestation...
             </div>
@@ -585,7 +585,7 @@
     <span><i class="fa-solid fa-paintbrush"></i> <span id="stat-img">IDLE</span></span>
 </div>
 
-<div id="toast-container"></div>
+<div id="toast-container" aria-live="polite" role="log"></div>
 
 <script src="/game.js"></script>
 </body>
