@@ -1111,3 +1111,27 @@
     .form-row { display: flex; gap: 10px; }
     .form-group { flex: 1; display: flex; flex-direction: column; }
     .form-group label { font-size: 0.65rem; color: #888; margin-bottom: 2px; }
+
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
