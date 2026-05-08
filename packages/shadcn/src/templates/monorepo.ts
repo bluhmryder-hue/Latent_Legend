@@ -26,7 +26,8 @@ export async function fontsourceMonorepoInit(options: TemplateInitOptions) {
   if (options.registryBaseConfig) {
     packagesUiConfig = deepmerge(packagesUiConfig, options.registryBaseConfig)
   }
-  packagesUiConfig.tailwind.baseColor = "neutral"
+  packagesUiConfig.tailwind.baseColor =
+    (options.registryBaseConfig as any)?.tailwind?.baseColor ?? "neutral"
   if (options.rtl) {
     packagesUiConfig.rtl = true
   }
@@ -49,7 +50,8 @@ export async function fontsourceMonorepoInit(options: TemplateInitOptions) {
   if (options.registryBaseConfig) {
     appsWebConfig = deepmerge(appsWebConfig, options.registryBaseConfig)
   }
-  appsWebConfig.tailwind.baseColor = "neutral"
+  appsWebConfig.tailwind.baseColor =
+    (options.registryBaseConfig as any)?.tailwind?.baseColor ?? "neutral"
   if (options.rtl) {
     appsWebConfig.rtl = true
   }
