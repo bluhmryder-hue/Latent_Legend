@@ -69,7 +69,7 @@
                 <div style="background:rgba(255,255,255,0.03); border:1px solid #444; border-radius:4px; padding:10px; margin-bottom:15px;">
                     <div style="font-size:0.75rem; color:var(--theme-accent); font-weight:bold; margin-bottom:5px; text-transform:uppercase; letter-spacing:1px;">Scenario Laboratory</div>
                     <div style="display:flex; gap:10px; align-items:center;">
-                        <label for="gen-scenario-select" class="sr-only">Load Scenario</label><select id="gen-scenario-select" class="gen-input" style="flex:1;" onchange="UI.applyScenario()">
+                        <label for="gen-scenario-select" class="sr-only">Load Scenario</label><label for="gen-scenario-select" class="sr-only">Load Scenario</label><select id="gen-scenario-select" class="gen-input" style="flex:1;" onchange="UI.applyScenario()">
                             <option value="">-- Load Scenario --</option>
                         </select>
                         <button class="icon-btn" onclick="UI.saveScenario()" title="Save Preset" aria-label="Save Preset" style="border:1px solid #444;">
@@ -207,7 +207,7 @@
                         <div style="display: flex; align-items: center; gap: 5px; margin-top: 2px;">
                             <input type="number" id="set-idle-mins" class="gen-input" style="padding: 5px;" min="1" max="120"
                                 onchange="Settings.update('idleTimeoutMins', this.value)">
-                            <input type="checkbox" id="set-idle-enabled" aria-label="Enable Idle Timeout"
+                            <input type="checkbox" id="set-idle-enabled" aria-label="Enable Idle Timeout" aria-label="Enable Idle Timeout"
                                 onchange="const v = this.checked ? 20 : 0; Settings.update('idleTimeoutMins', v);">
                         </div>
                     </div>
@@ -275,7 +275,7 @@
 
 <div id="app-container">
     <div id="stage-panel">
-        <div id="narrative-log" role="log" aria-live="polite">
+        <div id="narrative-log" role="log" aria-live="polite" role="log" aria-live="polite">
             <div class="log-entry" style="color: var(--text-dim); font-style: italic;">
                 System Initialized. Awaiting manifestation...
             </div>
@@ -288,20 +288,20 @@
         </div>
 
         <div id="command-deck">
-            <label for="target-selector" class="sr-only">Select Target</label><select id="target-selector" onchange="Manager.setTargetFromDropdown()">
+            <label for="target-selector" class="sr-only">Select Target</label><label for="target-selector" class="sr-only">Select Target</label><select id="target-selector" onchange="Manager.setTargetFromDropdown()">
                 <option value="">-- No Target --</option>
             </select>
 
-            <label for="action-mode" class="sr-only">Action Mode</label><select id="action-mode" onchange="UI.updateCommandDeck()">
+            <label for="action-mode" class="sr-only">Action Mode</label><label for="action-mode" class="sr-only">Action Mode</label><select id="action-mode" onchange="UI.updateCommandDeck()">
             </select>
 
-            <label for="player-input" class="sr-only">Player Input</label><input type="text" id="player-input" placeholder="Interact with the world..." autocomplete="off">
+            <label for="player-input" class="sr-only">Player Input</label><label for="player-input" class="sr-only">Player Input</label><input type="text" id="player-input" placeholder="Interact with the world..." autocomplete="off">
 
             <button id="btn-act" onclick="Manager.submit()">ACT</button>
 
             <div class="deck-divider"></div>
 
-            <label for="travel-dest" class="sr-only">Travel Destination</label><select id="travel-dest" onchange="Navigation.attemptTravel()">
+            <label for="travel-dest" class="sr-only">Travel Destination</label><label for="travel-dest" class="sr-only">Travel Destination</label><select id="travel-dest" onchange="Navigation.attemptTravel()">
                 <option value="">-- Stay Here --</option>
             </select>
             <button id="btn-travel" onclick="Navigation.attemptTravel()" style="display:none">GO</button>
