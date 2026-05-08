@@ -1,3 +1,10 @@
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'SentientQuest',
+  description: 'An Agentic Powered Game',
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -17,3 +24,5 @@ export default function RootLayout({
     </html>
   )
 }
+
+/* Last Modified: 2026-05-08T08:10:49Z */
