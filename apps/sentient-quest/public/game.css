@@ -1,4 +1,4 @@
-/* Last Modified: 2026-04-26T17:07:24Z
+/* Last Modified: 2026-05-08T08:10:49Z */
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Creepster&family=Nosifer&family=Dancing+Script:wght@400;700&family=Indie+Flower&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Orbitron:wght@400;700&family=Oswald:wght@400;700&family=Patrick+Hand&family=Playfair+Display:wght@400;700&family=Roboto+Mono:wght@400;700&family=Special+Elite&family=Courier+Prime&family=MedievalSharp&family=Architects+Daughter&family=Share+Tech+Mono&family=Great+Vibes&family=Tinos&family=Press+Start+2P&family=Sacramento&family=Bangers&family=Amatic+SC:wght@400;700&family=Lobster&family=Abril+Fatface&family=Shadows+Into+Light&family=Righteous&family=Monoton&family=Permanent+Marker&family=Philosopher&family=Didot&family=Allura&family=Rye&family=Rubik+Glitch&family=Butcherman&family=UnifrakturMaguntia&display=swap');
     :root {
         --theme-bg: #121212;
@@ -74,6 +74,10 @@
     }
     .icon-btn:hover { color: var(--theme-accent);
         border-color: var(--theme-accent); background: rgba(255,255,255,0.05); }
+    .icon-btn:focus-visible {
+        outline: 2px solid var(--theme-accent);
+        outline-offset: 2px;
+    }
 
     /* --- CHRONOS PHASE BAR --- */
     #chronos-wrapper {
@@ -1034,6 +1038,11 @@
         box-shadow: 0 0 10px -2px var(--theme-accent) !important;
     }
 
+    .gen-input:focus-visible {
+        outline: 2px solid var(--theme-accent);
+        outline-offset: 2px;
+    }
+
     /* 3. INTERACTIVE FEEDBACK (HOVER) */
     /* Subtle brightening instead of color shifts to maintain neutrality */
     .icon-btn, .gen-btn-secondary, .gen-btn-primary {
@@ -1060,6 +1069,11 @@
     .gen-btn-primary:hover {
         filter: brightness(1.2);
         box-shadow: 0 0 15px var(--theme-accent);
+    }
+
+    .gen-btn-primary:focus-visible, .gen-btn-secondary:focus-visible, .settings-close-btn:focus-visible {
+        outline: 2px solid var(--theme-accent);
+        outline-offset: 2px;
     }
 
     /* 4. CARDS & CONTAINERS (Glassmorphism) */
