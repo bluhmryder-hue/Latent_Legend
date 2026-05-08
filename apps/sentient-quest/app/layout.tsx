@@ -1,3 +1,10 @@
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'SentientQuest',
+  description: 'An Animus simulation',
+}
+
 export default function RootLayout({
   children,
 }: {

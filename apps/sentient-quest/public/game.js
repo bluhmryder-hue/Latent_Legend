@@ -1,5 +1,5 @@
-// Last Modified: 2026-04-26T17:07:24Z
-// Timestamp: 2026-04-26T17:07:24Z
+// Last Modified: 2026-05-08T08:26:00Z
+// Timestamp: 2026-05-08T08:26:00Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -51742,6 +51742,24 @@
         console.warn("[Bridge] Root not found. Mocking.");
         return { url: "https://via.placeholder.com/512?text=AI+Offline" };
     };
+
+    // Keyboard Shortcuts
+    window.addEventListener('keydown', function(e) {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+            return;
+        }
+
+        const key = e.key.toUpperCase();
+        switch(key) {
+            case 'G': UI.toggleGrimoire(); break;
+            case 'V': UI.toggleGallery(); break;
+            case 'S': UI.toggleSettings(); break;
+            case 'C': Persistence.saveGame(); break;
+            case 'T': UI.toggleChat(); break;
+            case 'M': UI.toggleTelemetry(); break;
+            case 'H': UI.toggleHelp(); break;
+        }
+    });
 
     // Boot
     setTimeout(() => {
