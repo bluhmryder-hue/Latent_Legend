@@ -1,5 +1,3 @@
-// Last Modified: 2026-05-15T12:00:00Z
-// Timestamp: 2026-05-15T12:00:00Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -50872,7 +50870,6 @@
                         <div style="text-align: center; border-bottom: 1px solid #555; padding-bottom: 15px; margin-bottom: 25px;">
                             <h2 style="margin: 0; font-size: 1.4rem; letter-spacing: 4px; color: #fff;">INCIDENT REPORT</h2>
                         </div>
-                        <div style="margin-bottom: 20px; color: #aaa; font-size: 0.9rem;"><strong>Timestamp:</strong> ${date}</div>
                         <div style="line-height: 1.7; font-size: 0.95rem;">
                             <strong style="color: #fff;">Field Observation:</strong><br><br>
                             ${content}
