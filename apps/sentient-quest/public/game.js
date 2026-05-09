@@ -1,5 +1,5 @@
-// Last Modified: 2026-05-08T08:26:00Z
-// Timestamp: 2026-05-08T08:26:00Z
+// Last Modified: 2026-05-09T08:28:12Z
+// Timestamp: 2026-05-09T08:28:12Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -43765,7 +43765,7 @@
             }
 
             if (!Object.values(rawInput).some(x => x.length > 0)) {
-                alert("Silence is void.");
+                UI.showToast("The void requires at least one anchor to manifest.", "warning");
                 return;
             }
 
@@ -46303,6 +46303,12 @@
 
             // --- EVENT DELEGATION SETUP (Runs Once) ---
             if (!grid.dataset.listenerAttached) {
+                grid.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        if (e.target.closest('.npc-card')) e.target.closest('.npc-card').click();
+                    }
+                });
                 grid.addEventListener('click', (evt) => {
                     const card = evt.target.closest('.npc-card');
                     if (!card) return;
@@ -46542,6 +46548,8 @@
                     card.id = domId;
                     card.className = 'npc-card';
                     card.style.position = "relative";
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('tabindex', '0');
                     grid.appendChild(card);
                 }
 
@@ -46561,6 +46569,7 @@
                 }
 
                 card.dataset.hash = stateHash;
+                card.setAttribute('aria-label', `Interact with ${displayName}`);
 
                 if (e.construction && e.construction.active) {
                     const steps = e.construction.steps;
