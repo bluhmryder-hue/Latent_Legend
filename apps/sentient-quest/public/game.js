@@ -1,5 +1,5 @@
-// Last Modified: 2026-05-08T08:26:00Z
-// Timestamp: 2026-05-08T08:26:00Z
+// Last Modified: 2026-05-08T09:00:00Z
+// Timestamp: 2026-05-08T09:00:00Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -46332,6 +46332,14 @@
                         Manager.submit();
                     }
                 });
+                grid.addEventListener('keydown', (evt) => {
+                    if (evt.key === 'Enter' || evt.key === ' ') {
+                        const card = evt.target.closest('.npc-card');
+                        if (!card) return;
+                        evt.preventDefault();
+                        card.click();
+                    }
+                });
                 grid.dataset.listenerAttached = "true";
             }
 
@@ -46542,6 +46550,8 @@
                     card.id = domId;
                     card.className = 'npc-card';
                     card.style.position = "relative";
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('tabindex', '0');
                     grid.appendChild(card);
                 }
 
@@ -46554,6 +46564,7 @@
                 card.dataset.imgUrl = imgUrl || "";
                 card.dataset.prompt = e.visualMeta?.portrait?.prompt ? e.visualMeta.portrait.prompt.replace(/"/g, '&quot;') : "Analysis";
                 card.dataset.name = displayName;
+                card.setAttribute('aria-label', `Interact with ${displayName}`);
 
                 // If identical, SKIP DOM reconstruction
                 if (card.dataset.hash === stateHash) {
