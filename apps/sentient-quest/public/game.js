@@ -46303,19 +46303,23 @@
 
             // --- EVENT DELEGATION SETUP (Runs Once) ---
             if (!grid.dataset.listenerAttached) {
-                const handleInteraction = (evt, card) => {
-                    // Prevent triggering if clicking specific action buttons inside the card
+                grid.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        const card = e.target.closest('.npc-card');
+                        if (card) { e.preventDefault(); card.click(); }
+                    }
+                });
+                grid.addEventListener('click', (evt) => {
+                    const card = evt.target.closest('.npc-card');
+                    if (!card) return;
                     if (evt.target.closest('button')) return;
-
                     const id = card.dataset.id;
                     const type = card.dataset.type;
                     const isVirtual = card.dataset.isVirtual === 'true';
                     const imgUrl = card.dataset.imgUrl;
                     const prompt = card.dataset.prompt;
                     const displayName = card.dataset.name;
-
                     const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
-
                     if (isVirtual) {
                         document.getElementById('travel-dest').value = id;
                         Navigation.attemptTravel();
@@ -46328,20 +46332,11 @@
                         UI.updateCommandDeck();
                         Manager.submit();
                     }
-                };
-
-                grid.addEventListener('click', (evt) => {
-                    const card = evt.target.closest('.npc-card');
-                    if (!card) return;
-                    handleInteraction(evt, card);
                 });
-
-                grid.addEventListener('keydown', (evt) => {
-                    if (evt.key === 'Enter' || evt.key === ' ') {
-                        const card = evt.target.closest('.npc-card');
-                        if (!card) return;
-                        evt.preventDefault();
-                        handleInteraction(evt, card);
+                grid.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        const card = e.target.closest('.npc-card');
+                        if (card) { e.preventDefault(); card.click(); }
                     }
                 });
                 grid.dataset.listenerAttached = "true";
@@ -46556,7 +46551,6 @@
                     card.style.position = "relative";
                     grid.appendChild(card);
                 }
-
                 card.tabIndex = 0;
                 card.setAttribute('role', 'button');
                 card.setAttribute('aria-label', displayName);
