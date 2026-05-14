@@ -46303,10 +46303,7 @@
 
             // --- EVENT DELEGATION SETUP (Runs Once) ---
             if (!grid.dataset.listenerAttached) {
-                grid.addEventListener('click', (evt) => {
-                    const card = evt.target.closest('.npc-card');
-                    if (!card) return;
-
+                const handleInteraction = (evt, card) => {
                     // Prevent triggering if clicking specific action buttons inside the card
                     if (evt.target.closest('button')) return;
 
@@ -46330,6 +46327,21 @@
                         document.getElementById('player-input').value = `I inspect ${displayName}`;
                         UI.updateCommandDeck();
                         Manager.submit();
+                    }
+                };
+
+                grid.addEventListener('click', (evt) => {
+                    const card = evt.target.closest('.npc-card');
+                    if (!card) return;
+                    handleInteraction(evt, card);
+                });
+
+                grid.addEventListener('keydown', (evt) => {
+                    if (evt.key === 'Enter' || evt.key === ' ') {
+                        const card = evt.target.closest('.npc-card');
+                        if (!card) return;
+                        evt.preventDefault();
+                        handleInteraction(evt, card);
                     }
                 });
                 grid.dataset.listenerAttached = "true";
@@ -46544,6 +46556,10 @@
                     card.style.position = "relative";
                     grid.appendChild(card);
                 }
+
+                card.tabIndex = 0;
+                card.setAttribute('role', 'button');
+                card.setAttribute('aria-label', displayName);
 
                 if (isObject) card.style.height = cardHeight;
 
