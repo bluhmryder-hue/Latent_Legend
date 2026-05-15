@@ -43765,7 +43765,7 @@
             }
 
             if (!Object.values(rawInput).some(x => x.length > 0)) {
-                alert("Silence is void.");
+                UI.showToast("Silence is void.", "warning");
                 return;
             }
 
@@ -46303,22 +46303,11 @@
 
             // --- EVENT DELEGATION SETUP (Runs Once) ---
             if (!grid.dataset.listenerAttached) {
-                grid.addEventListener('click', (evt) => {
-                    const card = evt.target.closest('.npc-card');
-                    if (!card) return;
-
-                    // Prevent triggering if clicking specific action buttons inside the card
+                const handleInteraction = (card, evt) => {
                     if (evt.target.closest('button')) return;
-
-                    const id = card.dataset.id;
-                    const type = card.dataset.type;
-                    const isVirtual = card.dataset.isVirtual === 'true';
-                    const imgUrl = card.dataset.imgUrl;
-                    const prompt = card.dataset.prompt;
-                    const displayName = card.dataset.name;
-
+                    const id = card.dataset.id, type = card.dataset.type, isVirtual = card.dataset.isVirtual === 'true';
+                    const imgUrl = card.dataset.imgUrl, prompt = card.dataset.prompt, displayName = card.dataset.name;
                     const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
-
                     if (isVirtual) {
                         document.getElementById('travel-dest').value = id;
                         Navigation.attemptTravel();
@@ -46330,6 +46319,16 @@
                         document.getElementById('player-input').value = `I inspect ${displayName}`;
                         UI.updateCommandDeck();
                         Manager.submit();
+                    }
+                };
+                grid.addEventListener('click', (evt) => {
+                    const card = evt.target.closest('.npc-card');
+                    if (card) handleInteraction(card, evt);
+                });
+                grid.addEventListener('keydown', (evt) => {
+                    if (evt.key === 'Enter' || evt.key === ' ') {
+                        const card = evt.target.closest('.npc-card');
+                        if (card) { evt.preventDefault(); handleInteraction(card, evt); }
                     }
                 });
                 grid.dataset.listenerAttached = "true";
@@ -46542,6 +46541,8 @@
                     card.id = domId;
                     card.className = 'npc-card';
                     card.style.position = "relative";
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('tabindex', '0');
                     grid.appendChild(card);
                 }
 
@@ -46554,6 +46555,7 @@
                 card.dataset.imgUrl = imgUrl || "";
                 card.dataset.prompt = e.visualMeta?.portrait?.prompt ? e.visualMeta.portrait.prompt.replace(/"/g, '&quot;') : "Analysis";
                 card.dataset.name = displayName;
+                card.setAttribute('aria-label', `Interact with ${displayName}`);
 
                 // If identical, SKIP DOM reconstruction
                 if (card.dataset.hash === stateHash) {
