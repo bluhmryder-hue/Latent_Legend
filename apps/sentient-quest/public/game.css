@@ -555,7 +555,7 @@
         overflow: hidden;
         flex-shrink: 0; /* Don't squash */
     }
-    .npc-card:hover { transform: translateX(4px); background: rgba(255, 255, 255, 0.08); }
+    .npc-card:hover, .npc-card:focus-visible { transform: translateX(4px); background: rgba(255, 255, 255, 0.08); outline: 2px solid var(--theme-accent); outline-offset: -2px; }
 
     .npc-portrait-slot { width: 60px; min-width: 60px; height: 90px; max-height: 90px; background-color: #050505; background-size: cover; background-position: top center; border-right: 1px solid rgba(255,255,255,0.1); position: relative; }
     .npc-info { flex-grow: 1; padding: 8px 10px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
