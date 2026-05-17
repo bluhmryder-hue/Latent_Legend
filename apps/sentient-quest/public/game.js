@@ -1,5 +1,5 @@
-// Last Modified: 2026-05-08T08:26:00Z
-// Timestamp: 2026-05-08T08:26:00Z
+// Last Modified: 2026-05-08T11:45:00Z
+// Timestamp: 2026-05-08T11:45:00Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -46303,12 +46303,12 @@
 
             // --- EVENT DELEGATION SETUP (Runs Once) ---
             if (!grid.dataset.listenerAttached) {
-                grid.addEventListener('click', (evt) => {
-                    const card = evt.target.closest('.npc-card');
+                const handleInteraction = (target, originalEvent) => {
+                    const card = target.closest('.npc-card');
                     if (!card) return;
 
                     // Prevent triggering if clicking specific action buttons inside the card
-                    if (evt.target.closest('button')) return;
+                    if (originalEvent.target.closest('button')) return;
 
                     const id = card.dataset.id;
                     const type = card.dataset.type;
@@ -46322,7 +46322,7 @@
                     if (isVirtual) {
                         document.getElementById('travel-dest').value = id;
                         Navigation.attemptTravel();
-                    } else if (evt.target.closest('.npc-portrait-slot') && imgUrl) {
+                    } else if (originalEvent.target.closest('.npc-portrait-slot') && imgUrl) {
                         UI.inspectImage(imgUrl, prompt || "Analysis", type === 'NPC' ? 'portrait' : 'square', id);
                     } else {
                         Manager.setTarget(e);
@@ -46330,6 +46330,14 @@
                         document.getElementById('player-input').value = `I inspect ${displayName}`;
                         UI.updateCommandDeck();
                         Manager.submit();
+                    }
+                };
+
+                grid.addEventListener('click', (evt) => handleInteraction(evt.target, evt));
+                grid.addEventListener('keydown', (evt) => {
+                    if (evt.key === 'Enter' || evt.key === ' ') {
+                        evt.preventDefault();
+                        handleInteraction(evt.target, evt);
                     }
                 });
                 grid.dataset.listenerAttached = "true";
@@ -46554,6 +46562,11 @@
                 card.dataset.imgUrl = imgUrl || "";
                 card.dataset.prompt = e.visualMeta?.portrait?.prompt ? e.visualMeta.portrait.prompt.replace(/"/g, '&quot;') : "Analysis";
                 card.dataset.name = displayName;
+
+                // A11y
+                card.setAttribute('role', 'button');
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('aria-label', `Interact with ${displayName}`);
 
                 // If identical, SKIP DOM reconstruction
                 if (card.dataset.hash === stateHash) {
