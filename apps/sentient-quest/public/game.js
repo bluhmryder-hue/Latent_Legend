@@ -46336,8 +46336,12 @@
                 grid.addEventListener('click', (evt) => handleInteraction(evt.target, evt));
                 grid.addEventListener('keydown', (evt) => {
                     if (evt.key === 'Enter' || evt.key === ' ') {
-                        evt.preventDefault();
-                        handleInteraction(evt.target, evt);
+                        const card = evt.target.closest('.npc-card');
+                        const isButton = evt.target.closest('button');
+                        if (card && !isButton) {
+                            evt.preventDefault();
+                            handleInteraction(evt.target, evt);
+                        }
                     }
                 });
                 grid.dataset.listenerAttached = "true";
