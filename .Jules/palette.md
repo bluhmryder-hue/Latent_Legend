@@ -5,3 +5,7 @@
 ## 2026-05-08 - [Blocker: Unterminated Multi-line Comments]
 **Learning:** Pre-existing syntax errors like unterminated `/*` comments in configuration files (e.g., `vitest.config.ts`) can silently break the entire test runner or build process, leading to confusing environment errors like "missing node_modules" when the actual cause is a parse error.
 **Action:** Perform a quick sanity check/lint on configuration files if the environment appears broken despite `pnpm install` succeeding.
+
+## 2026-05-18 - [Accessible Dynamic Lists via Event Delegation]
+**Learning:** For high-frequency dynamic UI elements (like the NPC Census), attaching individual listeners is inefficient. Implementing a shared `handleInteraction(card, target)` helper and using event delegation for both `click` and `keydown` (Enter/Space) on the parent container provides a robust, accessible, and performant pattern.
+**Action:** Use this pattern for all future dynamic lists in SentientQuest to ensure `aria-label`, `role="button"`, and focus states are maintained during state-hash-based DOM updates.
