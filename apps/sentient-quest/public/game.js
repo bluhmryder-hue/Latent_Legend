@@ -1,5 +1,5 @@
-// Last Modified: 2026-05-08T08:26:00Z
-// Timestamp: 2026-05-08T08:26:00Z
+// Last Modified: 2026-05-18T09:08:51Z
+// Timestamp: 2026-05-18T09:08:51Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -46296,6 +46296,35 @@
             this.render();
         },
 
+        handleInteraction(card, targetElement) {
+            if (!card) return;
+
+            // Prevent triggering if clicking specific action buttons inside the card
+            if (targetElement.closest('button')) return;
+
+            const id = card.dataset.id;
+            const type = card.dataset.type;
+            const isVirtual = card.dataset.isVirtual === 'true';
+            const imgUrl = card.dataset.imgUrl;
+            const prompt = card.dataset.prompt;
+            const displayName = card.dataset.name;
+
+            const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
+
+            if (isVirtual) {
+                document.getElementById('travel-dest').value = id;
+                Navigation.attemptTravel();
+            } else if (targetElement.closest('.npc-portrait-slot') && imgUrl) {
+                UI.inspectImage(imgUrl, prompt || "Analysis", type === 'NPC' ? 'portrait' : 'square', id);
+            } else {
+                Manager.setTarget(e);
+                document.getElementById('action-mode').value = "OBSERVE";
+                document.getElementById('player-input').value = `I inspect ${displayName}`;
+                UI.updateCommandDeck();
+                Manager.submit();
+            }
+        },
+
         render() {
             if (!GameState.player || !GameState.player.state || !GameState.player.state.locationId) return;
 
@@ -46305,33 +46334,19 @@
             if (!grid.dataset.listenerAttached) {
                 grid.addEventListener('click', (evt) => {
                     const card = evt.target.closest('.npc-card');
-                    if (!card) return;
+                    this.handleInteraction(card, evt.target);
+                });
 
-                    // Prevent triggering if clicking specific action buttons inside the card
-                    if (evt.target.closest('button')) return;
-
-                    const id = card.dataset.id;
-                    const type = card.dataset.type;
-                    const isVirtual = card.dataset.isVirtual === 'true';
-                    const imgUrl = card.dataset.imgUrl;
-                    const prompt = card.dataset.prompt;
-                    const displayName = card.dataset.name;
-
-                    const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
-
-                    if (isVirtual) {
-                        document.getElementById('travel-dest').value = id;
-                        Navigation.attemptTravel();
-                    } else if (evt.target.closest('.npc-portrait-slot') && imgUrl) {
-                        UI.inspectImage(imgUrl, prompt || "Analysis", type === 'NPC' ? 'portrait' : 'square', id);
-                    } else {
-                        Manager.setTarget(e);
-                        document.getElementById('action-mode').value = "OBSERVE";
-                        document.getElementById('player-input').value = `I inspect ${displayName}`;
-                        UI.updateCommandDeck();
-                        Manager.submit();
+                grid.addEventListener('keydown', (evt) => {
+                    if (evt.key === 'Enter' || evt.key === ' ') {
+                        const card = evt.target.closest('.npc-card');
+                        if (card) {
+                            evt.preventDefault();
+                            this.handleInteraction(card, evt.target);
+                        }
                     }
                 });
+
                 grid.dataset.listenerAttached = "true";
             }
 
@@ -46534,7 +46549,8 @@
                 // THE HASH CHECK
                 const constrState = e.construction?.active ? JSON.stringify(e.construction.steps) : 'ready';
                 const finalName = e.displayNameHtml || displayName;
-                const stateHash = `${imgUrl}|${insightBadge}|${favHtml}|${docHtml}|${actionRow}|${displayRole}|${displayMeta}|${finalName}|${constrState}`;
+                const accessibilityLabel = `${displayName} (${e.type}${displayRole ? ' - ' + displayRole.replace(/<[^>]*>/g, '') : ''})`;
+                const stateHash = `${imgUrl}|${insightBadge}|${favHtml}|${docHtml}|${actionRow}|${displayRole}|${displayMeta}|${finalName}|${constrState}|${accessibilityLabel}`;
 
                 let card = document.getElementById(domId);
                 if (!card) {
@@ -46542,8 +46558,11 @@
                     card.id = domId;
                     card.className = 'npc-card';
                     card.style.position = "relative";
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('tabindex', '0');
                     grid.appendChild(card);
                 }
+                card.setAttribute('aria-label', accessibilityLabel);
 
                 if (isObject) card.style.height = cardHeight;
 
