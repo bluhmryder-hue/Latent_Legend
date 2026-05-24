@@ -1,5 +1,5 @@
-// Last Modified: 2026-05-08T08:26:00Z
-// Timestamp: 2026-05-08T08:26:00Z
+// Last Modified: 2026-05-08T08:30:00Z
+// Timestamp: 2026-05-08T08:30:00Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -46296,6 +46296,33 @@
             this.render();
         },
 
+        handleInteraction(card, evt) {
+            // Prevent triggering if clicking specific action buttons inside the card
+            if (evt.target.closest('button')) return;
+
+            const id = card.dataset.id;
+            const type = card.dataset.type;
+            const isVirtual = card.dataset.isVirtual === 'true';
+            const imgUrl = card.dataset.imgUrl;
+            const prompt = card.dataset.prompt;
+            const displayName = card.dataset.name;
+
+            const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
+
+            if (isVirtual) {
+                document.getElementById('travel-dest').value = id;
+                Navigation.attemptTravel();
+            } else if (evt.target.closest('.npc-portrait-slot') && imgUrl) {
+                UI.inspectImage(imgUrl, prompt || "Analysis", type === 'NPC' ? 'portrait' : 'square', id);
+            } else {
+                Manager.setTarget(e);
+                document.getElementById('action-mode').value = "OBSERVE";
+                document.getElementById('player-input').value = `I inspect ${displayName}`;
+                UI.updateCommandDeck();
+                Manager.submit();
+            }
+        },
+
         render() {
             if (!GameState.player || !GameState.player.state || !GameState.player.state.locationId) return;
 
@@ -46305,31 +46332,15 @@
             if (!grid.dataset.listenerAttached) {
                 grid.addEventListener('click', (evt) => {
                     const card = evt.target.closest('.npc-card');
-                    if (!card) return;
-
-                    // Prevent triggering if clicking specific action buttons inside the card
-                    if (evt.target.closest('button')) return;
-
-                    const id = card.dataset.id;
-                    const type = card.dataset.type;
-                    const isVirtual = card.dataset.isVirtual === 'true';
-                    const imgUrl = card.dataset.imgUrl;
-                    const prompt = card.dataset.prompt;
-                    const displayName = card.dataset.name;
-
-                    const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
-
-                    if (isVirtual) {
-                        document.getElementById('travel-dest').value = id;
-                        Navigation.attemptTravel();
-                    } else if (evt.target.closest('.npc-portrait-slot') && imgUrl) {
-                        UI.inspectImage(imgUrl, prompt || "Analysis", type === 'NPC' ? 'portrait' : 'square', id);
-                    } else {
-                        Manager.setTarget(e);
-                        document.getElementById('action-mode').value = "OBSERVE";
-                        document.getElementById('player-input').value = `I inspect ${displayName}`;
-                        UI.updateCommandDeck();
-                        Manager.submit();
+                    if (card) this.handleInteraction(card, evt);
+                });
+                grid.addEventListener('keydown', (evt) => {
+                    if (evt.key === 'Enter' || evt.key === ' ') {
+                        const card = evt.target.closest('.npc-card');
+                        if (card) {
+                            evt.preventDefault();
+                            this.handleInteraction(card, evt);
+                        }
                     }
                 });
                 grid.dataset.listenerAttached = "true";
@@ -46542,6 +46553,8 @@
                     card.id = domId;
                     card.className = 'npc-card';
                     card.style.position = "relative";
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('tabindex', '0');
                     grid.appendChild(card);
                 }
 
@@ -46554,6 +46567,7 @@
                 card.dataset.imgUrl = imgUrl || "";
                 card.dataset.prompt = e.visualMeta?.portrait?.prompt ? e.visualMeta.portrait.prompt.replace(/"/g, '&quot;') : "Analysis";
                 card.dataset.name = displayName;
+                card.setAttribute('aria-label', finalName.replace(/<[^>]*>/g, ''));
 
                 // If identical, SKIP DOM reconstruction
                 if (card.dataset.hash === stateHash) {
