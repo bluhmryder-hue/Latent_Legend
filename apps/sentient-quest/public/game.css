@@ -1,4 +1,4 @@
-/* Last Modified: 2026-04-26T17:07:24Z
+/* Last Modified: 2026-05-29T08:25:41Z
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Creepster&family=Nosifer&family=Dancing+Script:wght@400;700&family=Indie+Flower&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Orbitron:wght@400;700&family=Oswald:wght@400;700&family=Patrick+Hand&family=Playfair+Display:wght@400;700&family=Roboto+Mono:wght@400;700&family=Special+Elite&family=Courier+Prime&family=MedievalSharp&family=Architects+Daughter&family=Share+Tech+Mono&family=Great+Vibes&family=Tinos&family=Press+Start+2P&family=Sacramento&family=Bangers&family=Amatic+SC:wght@400;700&family=Lobster&family=Abril+Fatface&family=Shadows+Into+Light&family=Righteous&family=Monoton&family=Permanent+Marker&family=Philosopher&family=Didot&family=Allura&family=Rye&family=Rubik+Glitch&family=Butcherman&family=UnifrakturMaguntia&display=swap');
     :root {
         --theme-bg: #121212;
@@ -1028,7 +1028,9 @@
         box-shadow: none;
     }
 
-    .gen-input:focus {
+    .gen-input:focus-visible {
+        outline: 2px solid var(--theme-accent);
+        outline-offset: 2px;
         border-color: var(--theme-accent) !important;
         background: rgba(0, 0, 0, 0.6) !important;
         box-shadow: 0 0 10px -2px var(--theme-accent) !important;
@@ -1046,6 +1048,21 @@
         background: rgba(255, 255, 255, 0.1);
         transform: translateY(-1px);
         text-shadow: 0 0 5px var(--theme-accent);
+    }
+
+    .npc-card:focus-visible,
+    .icon-btn:focus-visible,
+    .gen-btn-primary:focus-visible,
+    .gen-btn-secondary:focus-visible,
+    #genesis-modal.settings-mode .settings-close-btn:focus-visible {
+        outline: 2px solid var(--theme-accent);
+        outline-offset: 2px;
+        z-index: 100;
+    }
+
+    .npc-card:focus-visible {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateX(4px);
     }
 
     .gen-btn-primary {
