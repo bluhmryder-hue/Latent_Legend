@@ -5,3 +5,7 @@
 ## 2026-05-08 - [Blocker: Unterminated Multi-line Comments]
 **Learning:** Pre-existing syntax errors like unterminated `/*` comments in configuration files (e.g., `vitest.config.ts`) can silently break the entire test runner or build process, leading to confusing environment errors like "missing node_modules" when the actual cause is a parse error.
 **Action:** Perform a quick sanity check/lint on configuration files if the environment appears broken despite `pnpm install` succeeding.
+
+## 2026-05-29 - [Keyboard Accessibility & Event Delegation]
+**Learning:** For dynamic grids with frequently updated items, implement keyboard accessibility (Enter/Space) via event delegation on the parent container. To prevent double-triggers and maintain consistent behavior with click handlers, extract the interaction logic into a shared helper method. Descriptive ARIA labels should be composed of multiple dynamic state properties (name, role, status) to provide full context to screen reader users.
+**Action:** Use event delegation for keyboard listeners on dynamic containers and centralize interaction logic in helper methods.
