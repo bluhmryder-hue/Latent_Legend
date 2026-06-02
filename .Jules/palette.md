@@ -5,3 +5,7 @@
 ## 2026-05-08 - [Blocker: Unterminated Multi-line Comments]
 **Learning:** Pre-existing syntax errors like unterminated `/*` comments in configuration files (e.g., `vitest.config.ts`) can silently break the entire test runner or build process, leading to confusing environment errors like "missing node_modules" when the actual cause is a parse error.
 **Action:** Perform a quick sanity check/lint on configuration files if the environment appears broken despite `pnpm install` succeeding.
+
+## 2026-05-08 - [Dynamic Accessibility in Diffing Engines]
+**Learning:** In UI systems that use state-hashing to optimize DOM updates (like `sentient-quest`'s `CensusView`), all dynamic accessibility attributes (e.g., `aria-label` reflecting status badges) MUST be included in the state hash. Otherwise, a status change might not trigger a DOM update for the accessibility layer, leaving screen reader users with stale information.
+**Action:** Always audit component `stateHash` or `shouldComponentUpdate` logic to ensure accessibility-critical strings are tracked.
