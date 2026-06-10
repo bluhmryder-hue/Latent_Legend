@@ -46280,6 +46280,30 @@
     var CensusView = {
         state: { main: 'entities', sub: 'items' },
 
+        _handleInteraction(card, evt) {
+            const id = card.dataset.id;
+            const type = card.dataset.type;
+            const isVirtual = card.dataset.isVirtual === 'true';
+            const imgUrl = card.dataset.imgUrl;
+            const prompt = card.dataset.prompt;
+            const displayName = card.dataset.name;
+
+            const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
+
+            if (isVirtual) {
+                document.getElementById('travel-dest').value = id;
+                Navigation.attemptTravel();
+            } else if (evt.target.closest('.npc-portrait-slot') && imgUrl) {
+                UI.inspectImage(imgUrl, prompt || "Analysis", type === 'NPC' ? 'portrait' : 'square', id);
+            } else {
+                Manager.setTarget(e);
+                document.getElementById('action-mode').value = "OBSERVE";
+                document.getElementById('player-input').value = `I inspect ${displayName}`;
+                UI.updateCommandDeck();
+                Manager.submit();
+            }
+        },
+
         switchMain(tab) {
             this.state.main = tab;
             document.getElementById('tab-cen-entities').classList.toggle('active', tab === 'entities');
@@ -46301,36 +46325,12 @@
 
             const grid = document.getElementById('npc-grid');
 
-            const _handleInteraction = (card, evt) => {
-                const id = card.dataset.id;
-                const type = card.dataset.type;
-                const isVirtual = card.dataset.isVirtual === 'true';
-                const imgUrl = card.dataset.imgUrl;
-                const prompt = card.dataset.prompt;
-                const displayName = card.dataset.name;
-
-                const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
-
-                if (isVirtual) {
-                    document.getElementById('travel-dest').value = id;
-                    Navigation.attemptTravel();
-                } else if (evt.target.closest('.npc-portrait-slot') && imgUrl) {
-                    UI.inspectImage(imgUrl, prompt || "Analysis", type === 'NPC' ? 'portrait' : 'square', id);
-                } else {
-                    Manager.setTarget(e);
-                    document.getElementById('action-mode').value = "OBSERVE";
-                    document.getElementById('player-input').value = `I inspect ${displayName}`;
-                    UI.updateCommandDeck();
-                    Manager.submit();
-                }
-            };
-
             // --- EVENT DELEGATION SETUP (Runs Once) ---
             if (!grid.dataset.listenerAttached) {
                 grid.addEventListener('click', (evt) => {
                     const card = evt.target.closest('.npc-card');
                     if (!card || evt.target.closest('button')) return;
-                    _handleInteraction(card, evt);
+                    this._handleInteraction(card, evt);
                 });
 
                 grid.addEventListener('keydown', (evt) => {
@@ -46338,7 +46338,7 @@
                         const card = evt.target.closest('.npc-card');
                         if (card && !evt.target.closest('button')) {
                             evt.preventDefault();
-                            _handleInteraction(card, evt);
+                            this._handleInteraction(card, evt);
                         }
                     }
                 });
@@ -46544,7 +46544,11 @@
                 // THE HASH CHECK
                 const constrState = e.construction?.active ? JSON.stringify(e.construction.steps) : 'ready';
                 const finalName = e.displayNameHtml || displayName;
-                const stateHash = `${imgUrl}|${insightBadge}|${favHtml}|${docHtml}|${actionRow}|${displayRole}|${displayMeta}|${finalName}|${constrState}`;
+
+                // Accessibility attributes
+                const cleanLabel = (displayName + " " + (displayRole || "") + " " + (displayMeta || "")).replace(/<[^>]*>?/gm, '').replace(/&bull;/g, '•').trim();
+
+                const stateHash = `${imgUrl}|${insightBadge}|${favHtml}|${docHtml}|${actionRow}|${displayRole}|${displayMeta}|${finalName}|${constrState}|${cleanLabel}`;
 
                 let card = document.getElementById(domId);
                 if (!card) {
@@ -46560,7 +46564,6 @@
                 // Accessibility attributes
                 card.setAttribute('role', 'button');
                 card.setAttribute('tabindex', '0');
-                const cleanLabel = (displayName + " " + displayRole + " " + displayMeta).replace(/<[^>]*>?/gm, '').replace(/&bull;/g, '•').trim();
                 card.setAttribute('aria-label', cleanLabel);
 
                 // Dataset parameters for Event Delegation
