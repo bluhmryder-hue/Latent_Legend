@@ -16,6 +16,11 @@
         --dis-red: #ff5555;
     }
 
+    :focus-visible {
+        outline: 2px solid var(--theme-accent);
+        outline-offset: 2px;
+    }
+
     #world-bg, #narrative-log, .peri-card {
         filter: saturate(var(--theme-saturation));
         transition: filter 1s ease;
