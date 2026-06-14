@@ -1,5 +1,5 @@
-// Last Modified: 2026-05-08T08:26:00Z
-// Timestamp: 2026-05-08T08:26:00Z
+// Last Modified: 2026-05-15T12:00:00Z
+// Timestamp: 2026-05-15T12:00:00Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -46280,6 +46280,30 @@
     var CensusView = {
         state: { main: 'entities', sub: 'items' },
 
+        _handleInteraction(card, evt) {
+            const id = card.dataset.id;
+            const type = card.dataset.type;
+            const isVirtual = card.dataset.isVirtual === 'true';
+            const imgUrl = card.dataset.imgUrl;
+            const prompt = card.dataset.prompt;
+            const displayName = card.dataset.name;
+
+            const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
+
+            if (isVirtual) {
+                document.getElementById('travel-dest').value = id;
+                Navigation.attemptTravel();
+            } else if (evt.target.closest('.npc-portrait-slot') && imgUrl) {
+                UI.inspectImage(imgUrl, prompt || "Analysis", type === 'NPC' ? 'portrait' : 'square', id);
+            } else {
+                Manager.setTarget(e);
+                document.getElementById('action-mode').value = "OBSERVE";
+                document.getElementById('player-input').value = `I inspect ${displayName}`;
+                UI.updateCommandDeck();
+                Manager.submit();
+            }
+        },
+
         switchMain(tab) {
             this.state.main = tab;
             document.getElementById('tab-cen-entities').classList.toggle('active', tab === 'entities');
@@ -46305,31 +46329,15 @@
             if (!grid.dataset.listenerAttached) {
                 grid.addEventListener('click', (evt) => {
                     const card = evt.target.closest('.npc-card');
-                    if (!card) return;
-
-                    // Prevent triggering if clicking specific action buttons inside the card
-                    if (evt.target.closest('button')) return;
-
-                    const id = card.dataset.id;
-                    const type = card.dataset.type;
-                    const isVirtual = card.dataset.isVirtual === 'true';
-                    const imgUrl = card.dataset.imgUrl;
-                    const prompt = card.dataset.prompt;
-                    const displayName = card.dataset.name;
-
-                    const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
-
-                    if (isVirtual) {
-                        document.getElementById('travel-dest').value = id;
-                        Navigation.attemptTravel();
-                    } else if (evt.target.closest('.npc-portrait-slot') && imgUrl) {
-                        UI.inspectImage(imgUrl, prompt || "Analysis", type === 'NPC' ? 'portrait' : 'square', id);
-                    } else {
-                        Manager.setTarget(e);
-                        document.getElementById('action-mode').value = "OBSERVE";
-                        document.getElementById('player-input').value = `I inspect ${displayName}`;
-                        UI.updateCommandDeck();
-                        Manager.submit();
+                    if (!card || evt.target.closest('button')) return;
+                    this._handleInteraction(card, evt);
+                });
+                grid.addEventListener('keydown', (evt) => {
+                    if (evt.key === 'Enter' || evt.key === ' ') {
+                        const card = evt.target.closest('.npc-card');
+                        if (!card || evt.target.closest('button')) return;
+                        evt.preventDefault();
+                        this._handleInteraction(card, evt);
                     }
                 });
                 grid.dataset.listenerAttached = "true";
@@ -46554,6 +46562,16 @@
                 card.dataset.imgUrl = imgUrl || "";
                 card.dataset.prompt = e.visualMeta?.portrait?.prompt ? e.visualMeta.portrait.prompt.replace(/"/g, '&quot;') : "Analysis";
                 card.dataset.name = displayName;
+
+                // --- ACCESSIBILITY ---
+                const strip = (s) => (s || "").replace(/<[^>]*>?/gm, '').replace(/&bull;/g, '•').replace(/&nbsp;/g, ' ').replace(/&quot;/g, '"').replace(/&amp;/g, '&').trim();
+                const rawName = strip(displayName);
+                const rawRole = strip(displayRole);
+                const rawMeta = strip(displayMeta);
+                const aLabel = `${rawName}${rawRole ? ' - ' + rawRole : ''} (${rawMeta})`;
+                card.setAttribute("role", "button");
+                card.setAttribute("tabindex", "0");
+                card.setAttribute("aria-label", aLabel);
 
                 // If identical, SKIP DOM reconstruction
                 if (card.dataset.hash === stateHash) {
