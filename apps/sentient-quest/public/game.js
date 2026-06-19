@@ -21752,6 +21752,10 @@
                 .replace(/'/g, "&#039;");
         },
 
+        strip: (s) => {
+            return (s || '').replace(/<[^>]*>?/gm, '').replace(/&bull;/g, '•').replace(/&nbsp;/g, ' ').replace(/&quot;/g, '"').replace(/&amp;/g, '&').trim();
+        },
+
         validate: (data, schema, path = "root") => {
             if (data === undefined) throw new Error(`Missing data at ${path}`); // Changed from null check to just undefined
 
@@ -46296,6 +46300,30 @@
             this.render();
         },
 
+        _handleInteraction(card, evt) {
+            const id = card.dataset.id;
+            const type = card.dataset.type;
+            const isVirtual = card.dataset.isVirtual === 'true';
+            const imgUrl = card.dataset.imgUrl;
+            const prompt = card.dataset.prompt;
+            const displayName = card.dataset.name;
+
+            const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
+
+            if (isVirtual) {
+                document.getElementById('travel-dest').value = id;
+                Navigation.attemptTravel();
+            } else if (evt.target.closest('.npc-portrait-slot') && imgUrl) {
+                UI.inspectImage(imgUrl, prompt || "Analysis", type === 'NPC' ? 'portrait' : 'square', id);
+            } else {
+                Manager.setTarget(e);
+                document.getElementById('action-mode').value = "OBSERVE";
+                document.getElementById('player-input').value = `I inspect ${displayName}`;
+                UI.updateCommandDeck();
+                Manager.submit();
+            }
+        },
+
         render() {
             if (!GameState.player || !GameState.player.state || !GameState.player.state.locationId) return;
 
@@ -46306,30 +46334,17 @@
                 grid.addEventListener('click', (evt) => {
                     const card = evt.target.closest('.npc-card');
                     if (!card) return;
-
-                    // Prevent triggering if clicking specific action buttons inside the card
                     if (evt.target.closest('button')) return;
+                    this._handleInteraction(card, evt);
+                });
 
-                    const id = card.dataset.id;
-                    const type = card.dataset.type;
-                    const isVirtual = card.dataset.isVirtual === 'true';
-                    const imgUrl = card.dataset.imgUrl;
-                    const prompt = card.dataset.prompt;
-                    const displayName = card.dataset.name;
-
-                    const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
-
-                    if (isVirtual) {
-                        document.getElementById('travel-dest').value = id;
-                        Navigation.attemptTravel();
-                    } else if (evt.target.closest('.npc-portrait-slot') && imgUrl) {
-                        UI.inspectImage(imgUrl, prompt || "Analysis", type === 'NPC' ? 'portrait' : 'square', id);
-                    } else {
-                        Manager.setTarget(e);
-                        document.getElementById('action-mode').value = "OBSERVE";
-                        document.getElementById('player-input').value = `I inspect ${displayName}`;
-                        UI.updateCommandDeck();
-                        Manager.submit();
+                grid.addEventListener('keydown', (evt) => {
+                    if (evt.key === 'Enter' || evt.key === ' ') {
+                        const card = evt.target.closest('.npc-card');
+                        if (!card) return;
+                        if (evt.target.closest('button')) return;
+                        evt.preventDefault();
+                        this._handleInteraction(card, evt);
                     }
                 });
                 grid.dataset.listenerAttached = "true";
@@ -46554,6 +46569,14 @@
                 card.dataset.imgUrl = imgUrl || "";
                 card.dataset.prompt = e.visualMeta?.portrait?.prompt ? e.visualMeta.portrait.prompt.replace(/"/g, '&quot;') : "Analysis";
                 card.dataset.name = displayName;
+
+                // Accessibility attributes
+                card.setAttribute('role', 'button');
+                card.setAttribute('tabindex', '0');
+                const ariaName = Utils.strip(finalName);
+                const ariaRole = Utils.strip(displayRole);
+                const ariaMeta = Utils.strip(displayMeta);
+                card.setAttribute('aria-label', `${ariaName}${ariaRole ? ', ' + ariaRole : ''}${ariaMeta ? ', ' + ariaMeta : ''}`);
 
                 // If identical, SKIP DOM reconstruction
                 if (card.dataset.hash === stateHash) {
