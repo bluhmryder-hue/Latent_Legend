@@ -21752,6 +21752,15 @@
                 .replace(/'/g, "&#039;");
         },
 
+        stripHtml: (s) => {
+            return (s || '').replace(/<[^>]*>?/gm, '')
+                .replace(/&bull;/g, '•')
+                .replace(/&nbsp;/g, ' ')
+                .replace(/&quot;/g, '"')
+                .replace(/&amp;/g, '&')
+                .trim();
+        },
+
         validate: (data, schema, path = "root") => {
             if (data === undefined) throw new Error(`Missing data at ${path}`); // Changed from null check to just undefined
 
@@ -46301,15 +46310,9 @@
 
             const grid = document.getElementById('npc-grid');
 
-            // --- EVENT DELEGATION SETUP (Runs Once) ---
-            if (!grid.dataset.listenerAttached) {
-                grid.addEventListener('click', (evt) => {
-                    const card = evt.target.closest('.npc-card');
-                    if (!card) return;
-
-                    // Prevent triggering if clicking specific action buttons inside the card
-                    if (evt.target.closest('button')) return;
-
+            // --- CENTRALIZED INTERACTION HANDLER ---
+            if (!this._handleInteraction) {
+                this._handleInteraction = (card, evt) => {
                     const id = card.dataset.id;
                     const type = card.dataset.type;
                     const isVirtual = card.dataset.isVirtual === 'true';
@@ -46331,7 +46334,28 @@
                         UI.updateCommandDeck();
                         Manager.submit();
                     }
+                };
+            }
+
+            // --- EVENT DELEGATION SETUP (Runs Once) ---
+            if (!grid.dataset.listenerAttached) {
+                grid.addEventListener('click', (evt) => {
+                    const card = evt.target.closest('.npc-card');
+                    if (!card) return;
+                    if (evt.target.closest('button')) return;
+                    this._handleInteraction(card, evt);
                 });
+
+                grid.addEventListener('keydown', (evt) => {
+                    if (evt.key === 'Enter' || evt.key === ' ') {
+                        const card = evt.target.closest('.npc-card');
+                        if (!card) return;
+                        if (evt.target.closest('button')) return;
+                        evt.preventDefault();
+                        this._handleInteraction(card, evt);
+                    }
+                });
+
                 grid.dataset.listenerAttached = "true";
             }
 
@@ -46523,7 +46547,8 @@
                 if (e.type === 'NPC') {
                     const heartClass = e.isFavorite ? "fa-solid" : "fa-regular";
                     const heartColor = e.isFavorite ? "var(--dis-red)" : "#666";
-                    favHtml = `<button class="icon-btn" style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;" onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')"><i class="${heartClass} fa-heart"></i></button>`;
+                    const favLabel = e.isFavorite ? "Remove from Favorites" : "Add to Favorites";
+                    favHtml = `<button class="icon-btn" aria-label="${favLabel}" style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;" onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')"><i class="${heartClass} fa-heart"></i></button>`;
                 }
 
                 let docHtml = "";
@@ -46542,6 +46567,8 @@
                     card.id = domId;
                     card.className = 'npc-card';
                     card.style.position = "relative";
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('tabindex', '0');
                     grid.appendChild(card);
                 }
 
@@ -46554,6 +46581,12 @@
                 card.dataset.imgUrl = imgUrl || "";
                 card.dataset.prompt = e.visualMeta?.portrait?.prompt ? e.visualMeta.portrait.prompt.replace(/"/g, '&quot;') : "Analysis";
                 card.dataset.name = displayName;
+
+                const cleanName = Utils.stripHtml(finalName);
+                const cleanMeta = Utils.stripHtml(displayMeta);
+                const cleanRole = Utils.stripHtml(displayRole);
+                const ariaLabel = `${cleanName}, ${cleanMeta}${cleanRole ? ', ' + cleanRole : ''}`;
+                card.setAttribute('aria-label', ariaLabel);
 
                 // If identical, SKIP DOM reconstruction
                 if (card.dataset.hash === stateHash) {
