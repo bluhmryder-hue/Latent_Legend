@@ -1,5 +1,5 @@
-// Last Modified: 2026-05-08T08:26:00Z
-// Timestamp: 2026-05-08T08:26:00Z
+// Last Modified: 2026-06-25T08:25:51Z
+// Timestamp: 2026-06-25T08:25:51Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -43765,7 +43765,7 @@
             }
 
             if (!Object.values(rawInput).some(x => x.length > 0)) {
-                alert("Silence is void.");
+                UI.showToast("Silence is void.", "warning");
                 return;
             }
 
