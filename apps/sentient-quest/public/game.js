@@ -1,5 +1,5 @@
-// Last Modified: 2026-05-08T08:26:00Z
-// Timestamp: 2026-05-08T08:26:00Z
+// Last Modified: 2026-05-15T12:00:00Z
+// Timestamp: 2026-05-15T12:00:00Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -21750,6 +21750,16 @@
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
+        },
+
+        stripHtml: (str) => {
+            if (!str) return "";
+            return str.replace(/<[^>]*>/g, '')
+                      .replace(/&bull;/g, '•')
+                      .replace(/&nbsp;/g, ' ')
+                      .replace(/&quot;/g, '"')
+                      .replace(/&amp;/g, '&')
+                      .trim();
         },
 
         validate: (data, schema, path = "root") => {
@@ -46296,6 +46306,30 @@
             this.render();
         },
 
+        _handleInteraction(card, evt) {
+            const id = card.dataset.id;
+            const type = card.dataset.type;
+            const isVirtual = card.dataset.isVirtual === 'true';
+            const imgUrl = card.dataset.imgUrl;
+            const prompt = card.dataset.prompt;
+            const displayName = card.dataset.name;
+
+            const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
+
+            if (isVirtual) {
+                document.getElementById('travel-dest').value = id;
+                Navigation.attemptTravel();
+            } else if (evt.target.closest('.npc-portrait-slot') && imgUrl) {
+                UI.inspectImage(imgUrl, prompt || "Analysis", type === 'NPC' ? 'portrait' : 'square', id);
+            } else {
+                Manager.setTarget(e);
+                document.getElementById('action-mode').value = "OBSERVE";
+                document.getElementById('player-input').value = `I inspect ${displayName}`;
+                UI.updateCommandDeck();
+                Manager.submit();
+            }
+        },
+
         render() {
             if (!GameState.player || !GameState.player.state || !GameState.player.state.locationId) return;
 
@@ -46305,33 +46339,19 @@
             if (!grid.dataset.listenerAttached) {
                 grid.addEventListener('click', (evt) => {
                     const card = evt.target.closest('.npc-card');
-                    if (!card) return;
+                    if (!card || evt.target.closest('button')) return;
+                    this._handleInteraction(card, evt);
+                });
 
-                    // Prevent triggering if clicking specific action buttons inside the card
-                    if (evt.target.closest('button')) return;
-
-                    const id = card.dataset.id;
-                    const type = card.dataset.type;
-                    const isVirtual = card.dataset.isVirtual === 'true';
-                    const imgUrl = card.dataset.imgUrl;
-                    const prompt = card.dataset.prompt;
-                    const displayName = card.dataset.name;
-
-                    const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
-
-                    if (isVirtual) {
-                        document.getElementById('travel-dest').value = id;
-                        Navigation.attemptTravel();
-                    } else if (evt.target.closest('.npc-portrait-slot') && imgUrl) {
-                        UI.inspectImage(imgUrl, prompt || "Analysis", type === 'NPC' ? 'portrait' : 'square', id);
-                    } else {
-                        Manager.setTarget(e);
-                        document.getElementById('action-mode').value = "OBSERVE";
-                        document.getElementById('player-input').value = `I inspect ${displayName}`;
-                        UI.updateCommandDeck();
-                        Manager.submit();
+                grid.addEventListener('keydown', (evt) => {
+                    if (evt.key === 'Enter' || evt.key === ' ') {
+                        const card = evt.target.closest('.npc-card');
+                        if (!card || evt.target.closest('button')) return;
+                        evt.preventDefault();
+                        this._handleInteraction(card, evt);
                     }
                 });
+
                 grid.dataset.listenerAttached = "true";
             }
 
@@ -46523,7 +46543,8 @@
                 if (e.type === 'NPC') {
                     const heartClass = e.isFavorite ? "fa-solid" : "fa-regular";
                     const heartColor = e.isFavorite ? "var(--dis-red)" : "#666";
-                    favHtml = `<button class="icon-btn" style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;" onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')"><i class="${heartClass} fa-heart"></i></button>`;
+                    const favLabel = e.isFavorite ? "Remove from Favorites" : "Add to Favorites";
+                    favHtml = `<button class="icon-btn" aria-label="${favLabel}" style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;" onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')"><i class="${heartClass} fa-heart"></i></button>`;
                 }
 
                 let docHtml = "";
@@ -46534,7 +46555,13 @@
                 // THE HASH CHECK
                 const constrState = e.construction?.active ? JSON.stringify(e.construction.steps) : 'ready';
                 const finalName = e.displayNameHtml || displayName;
-                const stateHash = `${imgUrl}|${insightBadge}|${favHtml}|${docHtml}|${actionRow}|${displayRole}|${displayMeta}|${finalName}|${constrState}`;
+
+                // Generate ARIA label
+                const cleanName = Utils.stripHtml(finalName);
+                const cleanMeta = Utils.stripHtml(displayMeta);
+                const cleanRole = Utils.stripHtml(displayRole);
+                const ariaLabel = `${cleanName}. ${cleanMeta}${cleanRole ? '. ' + cleanRole : ''}. Interaction: Click or Enter to inspect.`;
+                const stateHash = `${imgUrl}|${insightBadge}|${favHtml}|${docHtml}|${actionRow}|${displayRole}|${displayMeta}|${finalName}|${constrState}|${ariaLabel}`;
 
                 let card = document.getElementById(domId);
                 if (!card) {
@@ -46542,8 +46569,12 @@
                     card.id = domId;
                     card.className = 'npc-card';
                     card.style.position = "relative";
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('tabindex', '0');
                     grid.appendChild(card);
                 }
+
+                card.setAttribute('aria-label', ariaLabel);
 
                 if (isObject) card.style.height = cardHeight;
 
