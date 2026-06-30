@@ -1,5 +1,5 @@
-// Last Modified: 2026-05-08T08:26:00Z
-// Timestamp: 2026-05-08T08:26:00Z
+// Last Modified: 2026-05-08T10:00:00Z
+// Timestamp: 2026-05-08T10:00:00Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -43760,12 +43760,12 @@
                 document.getElementById('gen-school').value = rawInput.school;
                 document.getElementById('gen-desc').value = rawInput.nature;
                 document.getElementById('gen-theme').value = rawInput.theme;
-                document.getElementById('gen-locus').value = rawInput.locus;
+                if (document.getElementById('gen-locus')) document.getElementById('gen-locus').value = rawInput.locus;
                 document.getElementById('gen-event').value = rawInput.event;
             }
 
             if (!Object.values(rawInput).some(x => x.length > 0)) {
-                alert("Silence is void.");
+                UI.showToast("The Void requires an anchor. Provide at least one detail to manifest.", "warning");
                 return;
             }
 
