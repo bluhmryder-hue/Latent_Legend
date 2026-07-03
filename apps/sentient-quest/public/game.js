@@ -1,5 +1,5 @@
-// Last Modified: 2026-05-08T08:26:00Z
-// Timestamp: 2026-05-08T08:26:00Z
+// Last Modified: 2026-05-08T09:00:00Z
+// Timestamp: 2026-05-08T09:00:00Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -21750,6 +21750,15 @@
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
+        },
+
+        stripHtml: (s) => {
+            if (!s) return "";
+            return s.replace(/<[^>]*>?/gm, '')
+                .replace(/&bull;/g, '•')
+                .replace(/&nbsp;/g, ' ')
+                .replace(/&quot;/g, '"')
+                .replace(/&amp;/g, '&');
         },
 
         validate: (data, schema, path = "root") => {
@@ -46280,6 +46289,30 @@
     var CensusView = {
         state: { main: 'entities', sub: 'items' },
 
+        _handleInteraction(card, evt) {
+            const id = card.dataset.id;
+            const type = card.dataset.type;
+            const isVirtual = card.dataset.isVirtual === 'true';
+            const imgUrl = card.dataset.imgUrl;
+            const prompt = card.dataset.prompt;
+            const displayName = card.dataset.name;
+
+            const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
+
+            if (isVirtual) {
+                document.getElementById('travel-dest').value = id;
+                Navigation.attemptTravel();
+            } else if (evt && evt.target.closest('.npc-portrait-slot') && imgUrl) {
+                UI.inspectImage(imgUrl, prompt || "Analysis", type === 'NPC' ? 'portrait' : 'square', id);
+            } else {
+                Manager.setTarget(e);
+                document.getElementById('action-mode').value = "OBSERVE";
+                document.getElementById('player-input').value = `I inspect ${displayName}`;
+                UI.updateCommandDeck();
+                Manager.submit();
+            }
+        },
+
         switchMain(tab) {
             this.state.main = tab;
             document.getElementById('tab-cen-entities').classList.toggle('active', tab === 'entities');
@@ -46306,30 +46339,17 @@
                 grid.addEventListener('click', (evt) => {
                     const card = evt.target.closest('.npc-card');
                     if (!card) return;
-
-                    // Prevent triggering if clicking specific action buttons inside the card
                     if (evt.target.closest('button')) return;
+                    this._handleInteraction(card, evt);
+                });
 
-                    const id = card.dataset.id;
-                    const type = card.dataset.type;
-                    const isVirtual = card.dataset.isVirtual === 'true';
-                    const imgUrl = card.dataset.imgUrl;
-                    const prompt = card.dataset.prompt;
-                    const displayName = card.dataset.name;
-
-                    const e = GameState.entities.find(ent => ent.id === id) || { id, type, isVirtual };
-
-                    if (isVirtual) {
-                        document.getElementById('travel-dest').value = id;
-                        Navigation.attemptTravel();
-                    } else if (evt.target.closest('.npc-portrait-slot') && imgUrl) {
-                        UI.inspectImage(imgUrl, prompt || "Analysis", type === 'NPC' ? 'portrait' : 'square', id);
-                    } else {
-                        Manager.setTarget(e);
-                        document.getElementById('action-mode').value = "OBSERVE";
-                        document.getElementById('player-input').value = `I inspect ${displayName}`;
-                        UI.updateCommandDeck();
-                        Manager.submit();
+                grid.addEventListener('keydown', (evt) => {
+                    if (evt.key === 'Enter' || evt.key === ' ') {
+                        const card = evt.target.closest('.npc-card');
+                        if (!card) return;
+                        if (evt.target.closest('button')) return;
+                        evt.preventDefault();
+                        this._handleInteraction(card, evt);
                     }
                 });
                 grid.dataset.listenerAttached = "true";
@@ -46516,25 +46536,31 @@
 
                 let actionRow = "";
                 if (e.type === 'SPIRIT') {
-                    actionRow = `<div style="margin-top:auto; padding-top:5px; border-top:1px solid #333; display:flex; gap:5px;"><button class="gen-btn-secondary" style="flex:1; padding:2px; font-size:0.7rem;" onclick="event.stopPropagation(); Metaphysics.toggleSubsumption(false, '${e.id}')"><i class="fa-solid fa-ghost"></i> Subsume</button></div>`;
+                    actionRow = `<div style="margin-top:auto; padding-top:5px; border-top:1px solid #333; display:flex; gap:5px;"><button class="gen-btn-secondary" style="flex:1; padding:2px; font-size:0.7rem;" onclick="event.stopPropagation(); Metaphysics.toggleSubsumption(false, '${e.id}')" aria-label="Subsume ${displayName}"><i class="fa-solid fa-ghost"></i> Subsume</button></div>`;
                 }
 
                 let favHtml = "";
                 if (e.type === 'NPC') {
                     const heartClass = e.isFavorite ? "fa-solid" : "fa-regular";
                     const heartColor = e.isFavorite ? "var(--dis-red)" : "#666";
-                    favHtml = `<button class="icon-btn" style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;" onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')"><i class="${heartClass} fa-heart"></i></button>`;
+                    const favLabel = e.isFavorite ? `Remove ${displayName} from favorites` : `Add ${displayName} to favorites`;
+                    favHtml = `<button class="icon-btn" style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;" onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')" aria-label="${favLabel}"><i class="${heartClass} fa-heart"></i></button>`;
                 }
 
                 let docHtml = "";
                 if (e.type === 'ITEM' && e.itemData && e.itemData.itemType === 'Document') {
-                    docHtml = `<button class="doc-pill" onclick="event.stopPropagation(); UI.readDocument('${e.id}')"><i class="fa-solid fa-book-open"></i> Read</button>`;
+                    docHtml = `<button class="doc-pill" onclick="event.stopPropagation(); UI.readDocument('${e.id}')" aria-label="Read ${displayName}"><i class="fa-solid fa-book-open"></i> Read</button>`;
                 }
+
+                const finalName = e.displayNameHtml || displayName;
+                const cleanName = Utils.stripHtml(finalName);
+                const cleanRole = Utils.stripHtml(displayRole);
+                const cleanMeta = Utils.stripHtml(displayMeta);
+                const cardAria = `${cleanName}. ${cleanRole ? cleanRole + '. ' : ''}${cleanMeta}.`;
 
                 // THE HASH CHECK
                 const constrState = e.construction?.active ? JSON.stringify(e.construction.steps) : 'ready';
-                const finalName = e.displayNameHtml || displayName;
-                const stateHash = `${imgUrl}|${insightBadge}|${favHtml}|${docHtml}|${actionRow}|${displayRole}|${displayMeta}|${finalName}|${constrState}`;
+                const stateHash = `${imgUrl}|${insightBadge}|${favHtml}|${docHtml}|${actionRow}|${displayRole}|${displayMeta}|${finalName}|${constrState}|${cardAria}`;
 
                 let card = document.getElementById(domId);
                 if (!card) {
@@ -46542,6 +46568,8 @@
                     card.id = domId;
                     card.className = 'npc-card';
                     card.style.position = "relative";
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('tabindex', '0');
                     grid.appendChild(card);
                 }
 
@@ -46561,6 +46589,7 @@
                 }
 
                 card.dataset.hash = stateHash;
+                card.setAttribute('aria-label', cardAria);
 
                 if (e.construction && e.construction.active) {
                     const steps = e.construction.steps;
