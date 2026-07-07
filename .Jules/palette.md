@@ -5,3 +5,7 @@
 ## 2026-05-08 - [Blocker: Unterminated Multi-line Comments]
 **Learning:** Pre-existing syntax errors like unterminated `/*` comments in configuration files (e.g., `vitest.config.ts`) can silently break the entire test runner or build process, leading to confusing environment errors like "missing node_modules" when the actual cause is a parse error.
 **Action:** Perform a quick sanity check/lint on configuration files if the environment appears broken despite `pnpm install` succeeding.
+
+## 2026-07-07 - [Glassmorphism & Focus Visibility]
+**Learning:** In UIs using heavy glassmorphism and dark themes, default browser focus outlines are often nearly invisible. A global `:focus-visible` rule using a high-contrast theme accent variable with an `outline-offset` is essential for keyboard navigation parity.
+**Action:** Always implement a custom `:focus-visible` style that leverages the application's accent color to ensure interactive elements are clearly marked during tab navigation.
