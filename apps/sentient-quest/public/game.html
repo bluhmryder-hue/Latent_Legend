@@ -1,4 +1,4 @@
-<!-- SentientQuest: Animus Engine | Last Modified: 2026-04-26T17:07:24Z
+<!-- SentientQuest: Animus Engine | Last Modified: 2026-05-15T12:00:00Z
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -15,7 +15,7 @@
 
 <div id="genesis-modal" class="modal-overlay active" style="background: #000;">
     <div class="genesis-box">
-        <button class="settings-close-btn" onclick="UI.toggleSettings()">
+        <button class="settings-close-btn" onclick="UI.toggleSettings()" aria-label="Close Settings">
             <i class="fa-solid fa-xmark"></i>
         </button>
 
@@ -72,10 +72,10 @@
                         <select id="gen-scenario-select" class="gen-input" style="flex:1;" onchange="UI.applyScenario()">
                             <option value="">-- Load Scenario --</option>
                         </select>
-                        <button class="icon-btn" onclick="UI.saveScenario()" title="Save Preset" style="border:1px solid #444;">
+                        <button class="icon-btn" onclick="UI.saveScenario()" title="Save Preset" aria-label="Save Preset" style="border:1px solid #444;">
                             <i class="fa-solid fa-floppy-disk"></i>
                         </button>
-                        <button class="icon-btn" onclick="UI.deleteScenario()" title="Delete Preset" style="border:1px solid #444; color:var(--dis-red);">
+                        <button class="icon-btn" onclick="UI.deleteScenario()" title="Delete Preset" aria-label="Delete Preset" style="border:1px solid #444; color:var(--dis-red);">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
@@ -120,7 +120,7 @@
                     <span class="setting-label">Select Role to Edit</span>
                     <div style="display: flex; gap: 5px;">
                         <select id="uniform-selector" class="gen-input" onchange="UI.loadUniform(this.value)" style="flex: 1;"></select>
-                        <button class="icon-btn" onclick="UI.regenerateCurrentTemplate()" title="Reset to Template" style="border: 1px solid #444;"><i class="fa-solid fa-rotate-left"></i></button>
+                        <button class="icon-btn" onclick="UI.regenerateCurrentTemplate()" title="Reset to Template" aria-label="Reset to Template" style="border: 1px solid #444;"><i class="fa-solid fa-rotate-left"></i></button>
                     </div>
                 </div>
                 <div class="setting-row">

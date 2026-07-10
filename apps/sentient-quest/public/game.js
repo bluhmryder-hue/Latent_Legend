@@ -1,5 +1,5 @@
-// Last Modified: 2026-05-08T08:26:00Z
-// Timestamp: 2026-05-08T08:26:00Z
+// Last Modified: 2026-05-15T12:00:00Z
+// Timestamp: 2026-05-15T12:00:00Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -48632,12 +48632,14 @@
 
                 const lockBtn = document.createElement('button');
                 lockBtn.className = "icon-btn";
+                lockBtn.setAttribute("aria-label", img.locked ? "Remove from Favorites" : "Add to Favorites");
                 lockBtn.style.color = img.locked ? "var(--dis-red)" : "#666";
                 lockBtn.innerHTML = img.locked ? `<i class="fa-solid fa-heart"></i>` : `<i class="fa-regular fa-heart"></i>`;
                 lockBtn.onclick = (e) => { e.stopPropagation(); GallerySystem.toggleLock(img.id); };
 
                 const delBtn = document.createElement('button');
                 delBtn.className = "icon-btn";
+                delBtn.setAttribute("aria-label", "Delete image");
                 delBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
                 delBtn.onclick = (e) => { e.stopPropagation(); GallerySystem.delete(img.id); };
 
@@ -49341,7 +49343,19 @@
             // Attach securely
             setTimeout(() => {
                 const btn = document.getElementById('btn-copy-seed');
-                if (btn) btn.onclick = () => Utils.copyToClipboard(seedText);
+                if (btn) {
+                    btn.onclick = () => {
+                        if (btn.classList.contains('copied')) return;
+                        Utils.copyToClipboard(seedText);
+                        const originalHtml = btn.innerHTML;
+                        btn.innerHTML = `<i class="fa-solid fa-check"></i> Copied Seed!`;
+                        btn.classList.add('copied');
+                        setTimeout(() => {
+                            btn.innerHTML = originalHtml;
+                            btn.classList.remove('copied');
+                        }, 2000);
+                    };
+                }
             }, 50);
 
             log.appendChild(card);
@@ -49921,10 +49935,10 @@
                                         <div style="display:flex; align-items:center; gap:10px;">
                                             <span id="qm-workers-text" style="font-weight:bold; font-size:0.75rem; color:#a29bfe; letter-spacing:1px;">Workers (0/0)</span>
                                             <div style="display:flex; gap:6px; margin-left: 5px;">
-                                                <button class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px; background:rgba(255,255,255,0.05);" onclick="Queue.applyBrakes(true)" title="Throttle Down (Brake)"><i class="fa-solid fa-minus"></i></button>
-                                                <button class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px; background:rgba(255,255,255,0.05);" onclick="Queue.applyAcceleration(true)" title="Throttle Up (Accelerate)"><i class="fa-solid fa-plus"></i></button>
-                                                <button class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px; background:rgba(255,255,255,0.05);" onclick="Queue.syncSettings()" title="Reset to Defaults"><i class="fa-solid fa-rotate-left"></i></button>
-                                                <button id="qm-btn-lock" class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px;" onclick="Queue.toggleLock()" title="Lock Throttle"><i class="fa-solid fa-lock-open"></i></button>
+                                                <button class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px; background:rgba(255,255,255,0.05);" onclick="Queue.applyBrakes(true)" title="Throttle Down (Brake)" aria-label="Throttle Down"><i class="fa-solid fa-minus"></i></button>
+                                                <button class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px; background:rgba(255,255,255,0.05);" onclick="Queue.applyAcceleration(true)" title="Throttle Up (Accelerate)" aria-label="Throttle Up"><i class="fa-solid fa-plus"></i></button>
+                                                <button class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px; background:rgba(255,255,255,0.05);" onclick="Queue.syncSettings()" title="Reset to Defaults" aria-label="Reset to Defaults"><i class="fa-solid fa-rotate-left"></i></button>
+                                                <button id="qm-btn-lock" class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px;" onclick="Queue.toggleLock()" title="Lock Throttle" aria-label="Lock Throttle"><i class="fa-solid fa-lock-open"></i></button>
                                             </div>
                                         </div>
                                         <span id="qm-status-text" style="font-size:0.75rem; font-weight:bold;">Status</span>
@@ -50633,8 +50647,20 @@
             if (type !== 'player' && rawText.length > 0) {
                 const btn = document.createElement('button');
                 btn.className = "copy-pill";
+                btn.setAttribute("aria-label", "Copy to clipboard");
                 btn.innerHTML = `<i class="fa-regular fa-copy"></i> Copy`;
-                btn.onclick = (e) => { e.stopPropagation(); Utils.copyToClipboard(rawText); };
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    if (btn.classList.contains('copied')) return;
+                    Utils.copyToClipboard(rawText);
+                    const originalHtml = btn.innerHTML;
+                    btn.innerHTML = `<i class="fa-solid fa-check"></i> Copied!`;
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        btn.innerHTML = originalHtml;
+                        btn.classList.remove('copied');
+                    }, 2000);
+                };
                 div.appendChild(btn);
             }
 
