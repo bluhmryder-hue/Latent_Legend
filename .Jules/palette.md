@@ -5,3 +5,7 @@
 ## 2026-05-08 - [Blocker: Unterminated Multi-line Comments]
 **Learning:** Pre-existing syntax errors like unterminated `/*` comments in configuration files (e.g., `vitest.config.ts`) can silently break the entire test runner or build process, leading to confusing environment errors like "missing node_modules" when the actual cause is a parse error.
 **Action:** Perform a quick sanity check/lint on configuration files if the environment appears broken despite `pnpm install` succeeding.
+
+## 2026-05-13 - [Themed Feedback vs System Alerts]
+**Learning:** Using native browser `alert()` calls in a highly stylized, dark glassmorphism interface is jarring and breaks immersion. Replacing these with existing themed notification systems (like `UI.showToast`) maintains aesthetic consistency and provides a more pleasant, non-disruptive user experience.
+**Action:** Audit the codebase for any remaining `alert()`, `confirm()`, or `prompt()` calls and replace them with themed UI components where appropriate.
