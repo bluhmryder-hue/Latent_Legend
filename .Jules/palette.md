@@ -5,3 +5,7 @@
 ## 2026-05-08 - [Blocker: Unterminated Multi-line Comments]
 **Learning:** Pre-existing syntax errors like unterminated `/*` comments in configuration files (e.g., `vitest.config.ts`) can silently break the entire test runner or build process, leading to confusing environment errors like "missing node_modules" when the actual cause is a parse error.
 **Action:** Perform a quick sanity check/lint on configuration files if the environment appears broken despite `pnpm install` succeeding.
+
+## 2026-07-16 - [Themed Toast vs Native Alert]
+**Learning:** In 'sentient-quest', native browser 'alert()' calls are disruptive and break the dark glassmorphism immersion. Always use the built-in 'UI.showToast(message, type)' method for validation feedback to maintain aesthetic consistency and non-blocking user flow.
+**Action:** Audit and replace native 'alert()' or 'confirm()' calls with 'UI.showToast()' or themed modals in the Animus engine.
