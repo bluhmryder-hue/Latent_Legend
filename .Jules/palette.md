@@ -5,3 +5,7 @@
 ## 2026-05-08 - [Blocker: Unterminated Multi-line Comments]
 **Learning:** Pre-existing syntax errors like unterminated `/*` comments in configuration files (e.g., `vitest.config.ts`) can silently break the entire test runner or build process, leading to confusing environment errors like "missing node_modules" when the actual cause is a parse error.
 **Action:** Perform a quick sanity check/lint on configuration files if the environment appears broken despite `pnpm install` succeeding.
+
+## 2026-07-17 - [Destructive Unclosed CSS Comments and Font @imports]
+**Learning:** Having an unclosed comment on the very first line of a CSS file (e.g., `/* Last Modified: ...` without a closing `*/`) is exceptionally destructive because CSS parsers will treat the subsequent lines as part of that comment. This silently silences critical `@import` rules (such as Google Fonts imports) since `@import` must precede all other content in the stylesheet.
+**Action:** Always ensure any metadata comment at the beginning of any stylesheet is strictly closed before any `@import` statements.
