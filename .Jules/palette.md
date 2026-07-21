@@ -5,3 +5,7 @@
 ## 2026-05-08 - [Blocker: Unterminated Multi-line Comments]
 **Learning:** Pre-existing syntax errors like unterminated `/*` comments in configuration files (e.g., `vitest.config.ts`) can silently break the entire test runner or build process, leading to confusing environment errors like "missing node_modules" when the actual cause is a parse error.
 **Action:** Perform a quick sanity check/lint on configuration files if the environment appears broken despite `pnpm install` succeeding.
+
+## 2026-05-08 - [Aria-Labels on Icon-Only Static Buttons]
+**Learning:** Icon-only buttons or close buttons (`×`, font-awesome icons, etc.) in static HTML are completely silent or read as "button" by screen readers if they lack `aria-label`s. Providing robust descriptive labels ensures accessibility and aligns with core UX/a11y guidelines.
+**Action:** Always audit static modal and page templates for any buttons containing only icons or shorthand characters, and ensure they are annotated with proper, localized `aria-label` attributes.
