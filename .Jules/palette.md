@@ -5,3 +5,7 @@
 ## 2026-05-08 - [Blocker: Unterminated Multi-line Comments]
 **Learning:** Pre-existing syntax errors like unterminated `/*` comments in configuration files (e.g., `vitest.config.ts`) can silently break the entire test runner or build process, leading to confusing environment errors like "missing node_modules" when the actual cause is a parse error.
 **Action:** Perform a quick sanity check/lint on configuration files if the environment appears broken despite `pnpm install` succeeding.
+
+## 2026-05-10 - [CSS Blockers & Silent UX Failures]
+**Learning:** Unterminated CSS block comments (e.g., `/* Last Modified ...`) at the top of a main stylesheet can silently disable all succeeding `@import` directives, completely blocking font rendering and visual identity without throwing explicit build-time or compile-time errors.
+**Action:** Always verify comment blocks in stylesheets and validate that headers do not interfere with trailing styles or imports.
