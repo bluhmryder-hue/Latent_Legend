@@ -1,5 +1,5 @@
-// Last Modified: 2026-05-08T08:26:00Z
-// Timestamp: 2026-05-08T08:26:00Z
+// Last Modified: 2026-05-08T08:30:00Z
+// Timestamp: 2026-05-08T08:30:00Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -43760,7 +43760,8 @@
                 document.getElementById('gen-school').value = rawInput.school;
                 document.getElementById('gen-desc').value = rawInput.nature;
                 document.getElementById('gen-theme').value = rawInput.theme;
-                document.getElementById('gen-locus').value = rawInput.locus;
+                const locusEl = document.getElementById('gen-locus');
+                if (locusEl) locusEl.value = rawInput.locus;
                 document.getElementById('gen-event').value = rawInput.event;
             }
 
@@ -51792,7 +51793,10 @@
                     if(data.school) document.getElementById('gen-school').value = data.school;
                     if(data.nature) document.getElementById('gen-desc').value = data.nature;
                     if(data.theme) document.getElementById('gen-theme').value = data.theme;
-                    if(data.locus) document.getElementById('gen-locus').value = data.locus;
+                    if(data.locus) {
+                        const locusEl = document.getElementById('gen-locus');
+                        if (locusEl) locusEl.value = data.locus;
+                    }
                     if(data.event) document.getElementById('gen-event').value = data.event;
 
                     // Trigger

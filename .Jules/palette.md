@@ -5,3 +5,7 @@
 ## 2026-05-08 - [Blocker: Unterminated Multi-line Comments]
 **Learning:** Pre-existing syntax errors like unterminated `/*` comments in configuration files (e.g., `vitest.config.ts`) can silently break the entire test runner or build process, leading to confusing environment errors like "missing node_modules" when the actual cause is a parse error.
 **Action:** Perform a quick sanity check/lint on configuration files if the environment appears broken despite `pnpm install` succeeding.
+
+## 2026-05-08 - [Blocker: Unclosed Comments in HTML/CSS]
+**Learning:** Unclosed HTML comments (like `<!-- Last Modified: ...`) or unclosed CSS multi-line comments on the very first line of core files will treat subsequent lines (like the entire DOM or `@import` rules for fonts) as comments. This silences key layout logic, breaking accessibility and typography.
+**Action:** Always strictly terminate comments with `-->` or `*/` and verify formatting checks pass.
