@@ -46523,7 +46523,7 @@
                 if (e.type === 'NPC') {
                     const heartClass = e.isFavorite ? "fa-solid" : "fa-regular";
                     const heartColor = e.isFavorite ? "var(--dis-red)" : "#666";
-                    favHtml = `<button class="icon-btn" style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;" onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')"><i class="${heartClass} fa-heart"></i></button>`;
+                    favHtml = `<button class="icon-btn" aria-label="${e.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}" style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;" onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')"><i class="${heartClass} fa-heart"></i></button>`;
                 }
 
                 let docHtml = "";
@@ -46920,6 +46920,7 @@
 
                 card.innerHTML = `
                     <button class="icon-btn"
+                        aria-label="${e.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}"
                         style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;"
                         onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')">
                         <i class="${heartClass} fa-heart"></i>
@@ -47913,9 +47914,9 @@
                         </div>
                         <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:#aaa;">
                             <span>Favorite</span>
-                            <span style="cursor:pointer;" onclick="Manager.toggleFavorite('${ent.id}'); GrimoireView.openDetail('${ent.id}');">
+                            <button class="icon-btn" aria-label="${ent.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}" style="cursor:pointer; border:none; background:none; padding:0;" onclick="Manager.toggleFavorite('${ent.id}'); GrimoireView.openDetail('${ent.id}');">
                                 <i class="${ent.isFavorite ? 'fa-solid' : 'fa-regular'} fa-heart" style="color:${ent.isFavorite ? 'var(--dis-red)' : '#666'}"></i>
-                            </span>
+                            </button>
                         </div>
                     </div>
                 </div>
