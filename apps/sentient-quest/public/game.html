@@ -1,4 +1,4 @@
-<!-- SentientQuest: Animus Engine | Last Modified: 2026-04-26T17:07:24Z
+<!-- SentientQuest: Animus Engine | Last Modified: 2026-05-08T08:26:00Z | Timestamp: 2026-05-08T08:26:00Z -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -26,21 +26,21 @@
             </div>
 
             <div class="input-group">
-                <label>School Name</label>
+                <label for="gen-school">School Name</label>
                 <input type="text" id="gen-school" placeholder="e.g. Blackwood High" class="gen-input">
             </div>
 
             <div class="input-group">
-                <label>School Nature & Description</label>
+                <label for="gen-desc">School Nature & Description</label>
                 <textarea id="gen-desc" placeholder="e.g. A hidden sect of karmic assassins..." class="gen-input" style="height: 60px;"></textarea>
             </div>
             <div class="input-group">
-                <label>Theme & Genre</label>
+                <label for="gen-theme">Theme & Genre</label>
                 <input type="text" id="gen-theme" placeholder="e.g. 90s Grunge Horror, Cyberpunk Academy" class="gen-input">
             </div>
 
             <div class="input-group">
-                <label>Inciting Event (The Birth)</label>
+                <label for="gen-event">Inciting Event (The Birth)</label>
                 <textarea id="gen-event" placeholder="What emotional surge created you?" class="gen-input"></textarea>
             </div>
 
@@ -288,20 +288,20 @@
         </div>
 
         <div id="command-deck">
-            <select id="target-selector" onchange="Manager.setTargetFromDropdown()">
+            <select id="target-selector" onchange="Manager.setTargetFromDropdown()" aria-label="Select interaction target">
                 <option value="">-- No Target --</option>
             </select>
 
-            <select id="action-mode" onchange="UI.updateCommandDeck()">
+            <select id="action-mode" onchange="UI.updateCommandDeck()" aria-label="Select action mode">
             </select>
 
-            <input type="text" id="player-input" placeholder="Interact with the world..." autocomplete="off">
+            <input type="text" id="player-input" placeholder="Interact with the world..." autocomplete="off" aria-label="Player interaction input">
 
             <button id="btn-act" onclick="Manager.submit()">ACT</button>
 
             <div class="deck-divider"></div>
 
-            <select id="travel-dest" onchange="Navigation.attemptTravel()">
+            <select id="travel-dest" onchange="Navigation.attemptTravel()" aria-label="Select travel destination">
                 <option value="">-- Stay Here --</option>
             </select>
             <button id="btn-travel" onclick="Navigation.attemptTravel()" style="display:none">GO</button>
