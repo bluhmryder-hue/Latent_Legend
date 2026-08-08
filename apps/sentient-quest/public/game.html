@@ -1,4 +1,4 @@
-<!-- SentientQuest: Animus Engine | Last Modified: 2026-04-26T17:07:24Z
+<!-- SentientQuest: Animus Engine | Last Modified: 2026-05-15T12:00:00Z -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -15,7 +15,7 @@
 
 <div id="genesis-modal" class="modal-overlay active" style="background: #000;">
     <div class="genesis-box">
-        <button class="settings-close-btn" onclick="UI.toggleSettings()">
+        <button class="settings-close-btn" onclick="UI.toggleSettings()" aria-label="Close Settings">
             <i class="fa-solid fa-xmark"></i>
         </button>
 
@@ -26,21 +26,21 @@
             </div>
 
             <div class="input-group">
-                <label>School Name</label>
+                <label for="gen-school">School Name</label>
                 <input type="text" id="gen-school" placeholder="e.g. Blackwood High" class="gen-input">
             </div>
 
             <div class="input-group">
-                <label>School Nature & Description</label>
+                <label for="gen-desc">School Nature & Description</label>
                 <textarea id="gen-desc" placeholder="e.g. A hidden sect of karmic assassins..." class="gen-input" style="height: 60px;"></textarea>
             </div>
             <div class="input-group">
-                <label>Theme & Genre</label>
+                <label for="gen-theme">Theme & Genre</label>
                 <input type="text" id="gen-theme" placeholder="e.g. 90s Grunge Horror, Cyberpunk Academy" class="gen-input">
             </div>
 
             <div class="input-group">
-                <label>Inciting Event (The Birth)</label>
+                <label for="gen-event">Inciting Event (The Birth)</label>
                 <textarea id="gen-event" placeholder="What emotional surge created you?" class="gen-input"></textarea>
             </div>
 
@@ -69,13 +69,13 @@
                 <div style="background:rgba(255,255,255,0.03); border:1px solid #444; border-radius:4px; padding:10px; margin-bottom:15px;">
                     <div style="font-size:0.75rem; color:var(--theme-accent); font-weight:bold; margin-bottom:5px; text-transform:uppercase; letter-spacing:1px;">Scenario Laboratory</div>
                     <div style="display:flex; gap:10px; align-items:center;">
-                        <select id="gen-scenario-select" class="gen-input" style="flex:1;" onchange="UI.applyScenario()">
+                        <select id="gen-scenario-select" class="gen-input" style="flex:1;" onchange="UI.applyScenario()" aria-label="Load Scenario Preset">
                             <option value="">-- Load Scenario --</option>
                         </select>
-                        <button class="icon-btn" onclick="UI.saveScenario()" title="Save Preset" style="border:1px solid #444;">
+                        <button class="icon-btn" onclick="UI.saveScenario()" title="Save Preset" aria-label="Save Scenario Preset" style="border:1px solid #444;">
                             <i class="fa-solid fa-floppy-disk"></i>
                         </button>
-                        <button class="icon-btn" onclick="UI.deleteScenario()" title="Delete Preset" style="border:1px solid #444; color:var(--dis-red);">
+                        <button class="icon-btn" onclick="UI.deleteScenario()" title="Delete Preset" aria-label="Delete Scenario Preset" style="border:1px solid #444; color:var(--dis-red);">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
@@ -108,7 +108,7 @@
                         </div>
                     </div>
                     <div style="flex:1;">
-                        <span class="setting-label">Enforcement</span>
+                        <label for="set-uniform-strictness" class="setting-label">Enforcement</label>
                         <select id="set-uniform-strictness" class="gen-input" style="margin-top:5px;" onchange="Settings.update('uniformStrictness', this.value)">
                             <option value="Relaxed">Relaxed (Damage Only)</option>
                             <option value="Standard">Standard (Hygiene)</option>
@@ -117,14 +117,14 @@
                     </div>
                 </div>
                 <div class="setting-row">
-                    <span class="setting-label">Select Role to Edit</span>
+                    <label for="uniform-selector" class="setting-label">Select Role to Edit</label>
                     <div style="display: flex; gap: 5px;">
                         <select id="uniform-selector" class="gen-input" onchange="UI.loadUniform(this.value)" style="flex: 1;"></select>
-                        <button class="icon-btn" onclick="UI.regenerateCurrentTemplate()" title="Reset to Template" style="border: 1px solid #444;"><i class="fa-solid fa-rotate-left"></i></button>
+                        <button class="icon-btn" onclick="UI.regenerateCurrentTemplate()" title="Reset to Template" aria-label="Reset Uniform to Template" style="border: 1px solid #444;"><i class="fa-solid fa-rotate-left"></i></button>
                     </div>
                 </div>
                 <div class="setting-row">
-                    <span class="setting-label">Attire Description</span>
+                    <label for="uniform-editor" class="setting-label">Attire Description</label>
 
                     <textarea id="uniform-editor" class="gen-input" style="height:120px; line-height: 1.5; font-family: monospace;" placeholder="Select a role to edit..." oninput="UI.saveUniform()"></textarea>
                 </div>
@@ -138,30 +138,30 @@
                     <button id="btn-tier-toggle" class="gen-btn-secondary" style="padding: 4px 10px; font-size: 0.75rem; width: 100px; font-weight: bold;" onclick="Settings.cycleTier()">Baseline</button>
                 </div>
                 <div class="setting-row" style="margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #333; padding-bottom: 8px;">
-                    <span class="setting-label" style="color:var(--theme-accent);">Enable Supernatural (Spirits)</span>
+                    <label for="set-allow-spirits" class="setting-label" style="color:var(--theme-accent);">Enable Supernatural (Spirits)</label>
                     <input type="checkbox" id="set-allow-spirits" onchange="Settings.update('allowSpirits', this.checked)" style="accent-color: var(--theme-accent); width: 16px; height: 16px;">
                 </div>
                 <div class="setting-row" style="display: flex; gap: 10px; margin-bottom: 8px;">
                     <div style="flex:1;">
-                        <span class="setting-label">Font Family</span>
+                        <label for="set-font-family" class="setting-label">Font Family</label>
                         <select class="gen-input" onchange="Settings.update('fontFamily', this.value)" id="set-font-family" style="width:100%;">
                         </select>
                     </div>
                     <div style="flex:1;">
-                        <span class="setting-label">Font Size: <span id="val-font-size">14px</span></span>
-                        <input type="range" min="12" max="18" value="14" style="width:100%; accent-color:var(--theme-accent); margin-top: 10px;" oninput="Settings.update('fontSize', this.value)">
+                        <label for="set-font-size" class="setting-label">Font Size: <span id="val-font-size">14px</span></label>
+                        <input type="range" id="set-font-size" min="12" max="18" value="14" style="width:100%; accent-color:var(--theme-accent); margin-top: 10px;" oninput="Settings.update('fontSize', this.value)">
                     </div>
                 </div>
 
                 <div class="setting-row" style="display: flex; gap: 10px; margin-top:5px; margin-bottom: 8px;">
                     <div style="flex:1;">
-                        <span class="setting-label">Text Threads: <span id="val-text-conc">5</span></span>
-                        <input type="range" min="4" max="15" value="5" style="width:100%; accent-color:var(--theme-accent);"
+                        <label for="set-text-concurrency" class="setting-label">Text Threads: <span id="val-text-conc">5</span></label>
+                        <input type="range" id="set-text-concurrency" min="4" max="15" value="5" style="width:100%; accent-color:var(--theme-accent);"
                             oninput="Settings.update('textConcurrency', this.value); document.getElementById('val-text-conc').innerText=this.value">
                     </div>
                     <div style="flex:1;">
-                        <span class="setting-label">Image Threads: <span id="val-img-conc">2</span></span>
-                        <input type="range" min="2" max="8" value="3" style="width:100%; accent-color:var(--theme-accent);"
+                        <label for="set-image-concurrency" class="setting-label">Image Threads: <span id="val-img-conc">2</span></label>
+                        <input type="range" id="set-image-concurrency" min="2" max="8" value="3" style="width:100%; accent-color:var(--theme-accent);"
                             oninput="Settings.update('imageConcurrency', this.value); document.getElementById('val-img-conc').innerText=this.value">
                     </div>
                 </div>
@@ -169,7 +169,7 @@
                 <hr style="border-color:#333; margin: 8px 0;">
 
                 <div class="setting-row" style="margin-bottom: 8px;">
-                    <span class="setting-label">Gender Ratio: <span id="val-gender-ratio">50% Female</span></span>
+                    <label for="set-gender-ratio" class="setting-label">Gender Ratio: <span id="val-gender-ratio">50% Female</span></label>
                     <input type="range" id="set-gender-ratio" min="0" max="100" step="5" value="50" style="width:100%; accent-color:var(--theme-accent);"
                         oninput="Settings.update('genderRatio', this.value); document.getElementById('val-gender-ratio').innerText=this.value + '% Female'">
                     <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:#666; margin-top:-5px;">
@@ -183,7 +183,7 @@
 
                 <div class="setting-row" style="display: flex; gap: 10px; margin-bottom: 8px;">
                     <div style="flex:1;">
-                        <span class="setting-label">Content Filter</span>
+                        <label for="set-content-rating" class="setting-label">Content Filter</label>
                         <select class="gen-input" onchange="Settings.update('contentRating', this.value)" id="set-content-rating">
                             <option value="Everyone">Everyone (Clean)</option>
                             <option value="Teen">Teen (PG-13)</option>
@@ -193,36 +193,36 @@
                         </select>
                     </div>
                     <div style="flex:1;">
-                        <span class="setting-label">Visual Medium</span>
+                        <label for="set-medium-preset" class="setting-label">Visual Medium</label>
                         <select class="gen-input" onchange="Settings.setMedium(this.value)" id="set-medium-preset">
                         </select>
                     </div>
                     <div style="flex:1;">
-                        <span class="setting-label">Stylization</span>
+                        <label for="set-style-preset" class="setting-label">Stylization</label>
                         <select class="gen-input" onchange="Settings.setStylization(this.value)" id="set-style-preset">
                         </select>
                     </div>
                     <div style="flex: 0 0 100px;">
-                        <span class="setting-label">Idle Time</span>
+                        <label for="set-idle-mins" class="setting-label">Idle Time</label>
                         <div style="display: flex; align-items: center; gap: 5px; margin-top: 2px;">
                             <input type="number" id="set-idle-mins" class="gen-input" style="padding: 5px;" min="1" max="120"
                                 onchange="Settings.update('idleTimeoutMins', this.value)">
-                            <input type="checkbox" id="set-idle-enabled"
+                            <input type="checkbox" id="set-idle-enabled" aria-label="Enable Idle Timeout"
                                 onchange="const v = this.checked ? 20 : 0; Settings.update('idleTimeoutMins', v);">
                         </div>
                     </div>
                 </div>
 
                 <div class="setting-row" style="margin-bottom: 8px;">
-                    <span class="setting-label">Style Helper (Prompt)</span>
+                    <label for="set-style-text" class="setting-label">Style Helper (Prompt)</label>
                     <textarea class="gen-input" style="height:40px; min-height:40px;" placeholder="Override the visual style..." oninput="Settings.update('styleText', this.value)" id="set-style-text"></textarea>
                 </div>
                 <div class="setting-row" style="margin-bottom: 8px;">
-                    <span class="setting-label">Narrative Flavor</span>
+                    <label for="set-theme-intro" class="setting-label">Narrative Flavor</label>
                     <textarea class="gen-input" style="height:40px; min-height:40px;" oninput="Settings.update('themeIntro', this.value)" id="set-theme-intro"></textarea>
                 </div>
                 <div class="setting-row" style="margin-bottom: 8px;">
-                    <span class="setting-label">Negative Prompt</span>
+                    <label for="set-negative-prompt" class="setting-label">Negative Prompt</label>
                     <textarea class="gen-input" style="height:40px; min-height:40px;" oninput="Settings.update('negativePrompt', this.value)" id="set-negative-prompt">text, watermark, blurry, interface, ugly, deformed</textarea>
                 </div>
 
@@ -288,20 +288,20 @@
         </div>
 
         <div id="command-deck">
-            <select id="target-selector" onchange="Manager.setTargetFromDropdown()">
+            <select id="target-selector" onchange="Manager.setTargetFromDropdown()" aria-label="Select Target">
                 <option value="">-- No Target --</option>
             </select>
 
-            <select id="action-mode" onchange="UI.updateCommandDeck()">
+            <select id="action-mode" onchange="UI.updateCommandDeck()" aria-label="Select Action Mode">
             </select>
 
-            <input type="text" id="player-input" placeholder="Interact with the world..." autocomplete="off">
+            <input type="text" id="player-input" placeholder="Interact with the world..." autocomplete="off" aria-label="Player Input">
 
             <button id="btn-act" onclick="Manager.submit()">ACT</button>
 
             <div class="deck-divider"></div>
 
-            <select id="travel-dest" onchange="Navigation.attemptTravel()">
+            <select id="travel-dest" onchange="Navigation.attemptTravel()" aria-label="Select Travel Destination">
                 <option value="">-- Stay Here --</option>
             </select>
             <button id="btn-travel" onclick="Navigation.attemptTravel()" style="display:none">GO</button>
@@ -391,7 +391,7 @@
     <div class="modal-box">
         <div class="modal-header">
             <span>The Animus Protocol</span>
-            <button class="icon-btn" onclick="UI.toggleHelp()">&times;</button>
+            <button class="icon-btn" onclick="UI.toggleHelp()" aria-label="Close Help">&times;</button>
         </div>
         <div class="modal-content">
             <div class="help-section">
@@ -478,7 +478,7 @@
 <div class="modal-box" id="chat-modal" style="display: none; position: fixed; top: 80px; right: 40px; height: 600px; width: 400px; max-width: 95vw; z-index: 998; box-shadow: 0 0 30px rgba(0,0,0,0.8); resize: both; overflow: hidden; min-width: 300px; min-height: 300px;">
     <div class="modal-header" id="chat-header" style="border-color: #00d4ff; cursor: move; background: rgba(15, 15, 20, 0.95);">
         <span style="color: #00d4ff; pointer-events: none;"><i class="fa-solid fa-comments"></i> Spirit Commune</span>
-        <button class="icon-btn" onclick="UI.toggleChat()">&times;</button>
+        <button class="icon-btn" onclick="UI.toggleChat()" aria-label="Close Spirit Commune">&times;</button>
     </div>
     <div class="modal-content" style="padding: 0; background: #1a1a2e; overflow: hidden; display: flex; flex-direction: column; flex: 1;">
         [commentsPlugin(ChatOptions)]
@@ -494,8 +494,8 @@
             </span>
         </div>
         <div style="display: flex; gap: 5px;">
-            <button class="icon-btn dev-only" onclick="UI.toggleDevSanctum()" title="Architect's Sanctum"><i class="fa-solid fa-code"></i></button>
-            <button class="icon-btn" onclick="UI.toggleTelemetry()">&times;</button>
+            <button class="icon-btn dev-only" onclick="UI.toggleDevSanctum()" title="Architect's Sanctum" aria-label="Toggle Architect's Sanctum"><i class="fa-solid fa-code"></i></button>
+            <button class="icon-btn" onclick="UI.toggleTelemetry()" aria-label="Close AI Job Monitor">&times;</button>
         </div>
     </div>
     <div id="telemetry-log-viewer" class="modal-content" style="padding: 15px; background: rgba(10, 10, 15, 0.95); overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
@@ -509,10 +509,10 @@
     <div class="modal-header" id="gallery-header" style="cursor: move;">
         <span style="pointer-events: none;">Visual Archives <span id="gal-capacity" style="font-size:0.7rem; color:#666; margin-left:10px;">(0/100)</span></span>
         <div style="display:flex; gap:10px;">
-            <button class="icon-btn" onclick="GallerySystem.clean()" title="Purge Unlocked & Unused" style="color:var(--dis-red); border-color:var(--dis-red); font-size:0.8rem;">
+            <button class="icon-btn" onclick="GallerySystem.clean()" title="Purge Unlocked & Unused" aria-label="Purge Unlocked and Unused" style="color:var(--dis-red); border-color:var(--dis-red); font-size:0.8rem;">
                 <i class="fa-solid fa-trash-can-arrow-up"></i> Purge
             </button>
-            <button class="icon-btn" onclick="UI.toggleGallery()">&times;</button>
+            <button class="icon-btn" onclick="UI.toggleGallery()" aria-label="Close Visual Archives">&times;</button>
         </div>
     </div>
     <div class="modal-content" style="background: rgba(0,0,0,0.2); padding: 15px; display:flex; flex-direction:column; flex:1; height:100%;">
@@ -524,7 +524,7 @@
 <div class="modal-box" id="grimoire-modal" style="display: none; position: fixed; top: 50px; left: 50px; width: 800px; height: 80vh; max-width: 95vw; z-index: 996; box-shadow: 0 0 30px rgba(0,0,0,0.8); resize: both; overflow: hidden; min-width: 400px; min-height: 300px;">
     <div class="modal-header" id="grim-header-bar" style="cursor: move;">
         <span style="pointer-events: none;">The Grimoire</span>
-        <button class="icon-btn" onclick="UI.toggleGrimoire()">&times;</button>
+        <button class="icon-btn" onclick="UI.toggleGrimoire()" aria-label="Close Grimoire">&times;</button>
     </div>
 
     <div class="modal-content" style="background: rgba(0,0,0,0.2); display:flex; flex-direction:column; padding:0; position: relative; flex: 1; height: 100%;">
@@ -563,7 +563,7 @@
         <img id="inspector-img" src="" style="max-width: 100%; max-height: 80vh; border: 1px solid var(--theme-accent); box-shadow: 0 0 50px rgba(0,0,0,0.8);">
         <div id="inspector-meta" style="background: rgba(0,0,0,0.8); padding: 10px; color: #aaa; font-size: 0.9rem; margin-top: 5px; text-align: center;"></div>
         <button class="icon-btn" style="position: absolute;
-                top: -40px; right: 0; font-size: 1.5rem;" onclick="UI.closeInspector()">&times;</button>
+                top: -40px; right: 0; font-size: 1.5rem;" onclick="UI.closeInspector()" aria-label="Close Inspector">&times;</button>
         <button id="btn-regen-inspector" class="gen-btn-secondary" style="width: 100%;
                 margin-top: 10px;" onclick="UI.regenerateInspected()">
             <i class="fa-solid fa-rotate"></i> Dream Again (Regenerate)
