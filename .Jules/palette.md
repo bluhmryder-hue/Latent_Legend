@@ -5,3 +5,7 @@
 ## 2026-05-08 - [Blocker: Unterminated Multi-line Comments]
 **Learning:** Pre-existing syntax errors like unterminated `/*` comments in configuration files (e.g., `vitest.config.ts`) can silently break the entire test runner or build process, leading to confusing environment errors like "missing node_modules" when the actual cause is a parse error.
 **Action:** Perform a quick sanity check/lint on configuration files if the environment appears broken despite `pnpm install` succeeding.
+
+## 2026-08-11 - [Accessibility: Unclosed Asset Header Comments & Screen Reader Labels]
+**Learning:** Unclosed multiline comments at the start of source files (like CSS, HTML) can cause silent failures (e.g., silencing font `@import` rules in CSS or swallowing DOM nodes in standard HTML parsers/Playwright). Additionally, a comprehensive audit of interactive form elements (inputs, textareas, selects) using standard `<label>` components with matching `id`/`for` attributes (or `.sr-only` classes) dramatically increases screen-reader accessibility and interactive usability.
+**Action:** Always verify all start comments are strictly closed with their corresponding tag (`-->` or `*/`), and structure form fields with explicit, semantic `<label>` associations to guarantee full screen-reader support.
