@@ -5,3 +5,7 @@
 ## 2026-05-08 - [Blocker: Unterminated Multi-line Comments]
 **Learning:** Pre-existing syntax errors like unterminated `/*` comments in configuration files (e.g., `vitest.config.ts`) can silently break the entire test runner or build process, leading to confusing environment errors like "missing node_modules" when the actual cause is a parse error.
 **Action:** Perform a quick sanity check/lint on configuration files if the environment appears broken despite `pnpm install` succeeding.
+
+## 2026-05-12 - [Accessible Interactive Elements & Syntax Safeguards]
+**Learning:** Icon-only buttons lacking explicit `aria-label` attributes are completely silent to screen readers, rendering critical application features (such as closing modals, toggling states, or purging storage) inaccessible. Additionally, subtle syntax mistakes like unclosed HTML/CSS comments on the first line of critical resource files can silently fail font imports or cause DOM parser timeouts in testing frameworks.
+**Action:** Always audit interactive icon-only control structures for descriptive `aria-label` parameters and strictly close header comment blocks in CSS, HTML, and JS configurations.
