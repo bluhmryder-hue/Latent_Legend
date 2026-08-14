@@ -5,3 +5,7 @@
 ## 2026-05-08 - [Blocker: Unterminated Multi-line Comments]
 **Learning:** Pre-existing syntax errors like unterminated `/*` comments in configuration files (e.g., `vitest.config.ts`) can silently break the entire test runner or build process, leading to confusing environment errors like "missing node_modules" when the actual cause is a parse error.
 **Action:** Perform a quick sanity check/lint on configuration files if the environment appears broken despite `pnpm install` succeeding.
+
+## 2026-08-14 - [Silenced CSS Imports & Parser Breaks from Unclosed Comments]
+**Learning:** Unclosed comments on the first line of critical files (like an unclosed `<!--` in `game.html` or an unclosed `/*` in `game.css`) can lead to subtle but severe failures. In CSS, an unclosed comment silences `@import` statements for external fonts (causing fallback typography failures); in HTML, it treats the entire file as a comment for standard parsers (breaking DOM trees in tools like Playwright or Python parsers).
+**Action:** Always ensure all metadata comment blocks are strictly closed (`-->` for HTML, `*/` for CSS) and verify loading of critical resources like external fonts.
