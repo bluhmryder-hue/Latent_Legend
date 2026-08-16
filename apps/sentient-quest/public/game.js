@@ -51745,6 +51745,52 @@
 
     // Keyboard Shortcuts
     window.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+            // Dismiss active overlays/modals in top-down priority order
+            const inspector = document.getElementById('inspector-modal');
+            if (inspector && inspector.classList.contains('active')) {
+                UI.closeInspector();
+                return;
+            }
+
+            const help = document.getElementById('help-modal');
+            if (help && help.classList.contains('active')) {
+                UI.toggleHelp();
+                return;
+            }
+
+            const settings = document.getElementById('genesis-modal');
+            if (settings && settings.classList.contains('active') && settings.classList.contains('settings-mode')) {
+                UI.toggleSettings();
+                return;
+            }
+
+            const grimoire = document.getElementById('grimoire-modal');
+            if (grimoire && grimoire.style.display !== 'none' && window.getComputedStyle(grimoire).display !== 'none') {
+                UI.toggleGrimoire();
+                return;
+            }
+
+            const gallery = document.getElementById('gallery-modal');
+            if (gallery && gallery.style.display !== 'none' && window.getComputedStyle(gallery).display !== 'none') {
+                UI.toggleGallery();
+                return;
+            }
+
+            const telemetry = document.getElementById('telemetry-box');
+            if (telemetry && telemetry.style.display !== 'none' && window.getComputedStyle(telemetry).display !== 'none') {
+                UI.toggleTelemetry();
+                return;
+            }
+
+            const chat = document.getElementById('chat-modal');
+            if (chat && chat.style.display !== 'none' && window.getComputedStyle(chat).display !== 'none') {
+                UI.toggleChat();
+                return;
+            }
+            return;
+        }
+
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
             return;
         }
