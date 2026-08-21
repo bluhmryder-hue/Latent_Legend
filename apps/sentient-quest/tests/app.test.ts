@@ -1,3 +1,5 @@
+import fs from 'fs'
+import path from 'path'
 import { describe, it, expect } from 'vitest'
 
 describe('SentientQuest App Consistency', () => {
@@ -12,6 +14,22 @@ describe('SentientQuest App Consistency', () => {
     // In a real env we'd use React Testing Library, but for now we check logic
     expect(page).toBeDefined()
   })
+
+  it('should have properly closed comments and ARIA labels on icon buttons in game.html', () => {
+    const htmlPath = path.resolve(__dirname, '../public/game.html')
+    const html = fs.readFileSync(htmlPath, 'utf8')
+
+    // Ensure header comment is properly closed
+    const firstLine = html.split('\n')[0]
+    expect(firstLine).toContain('-->')
+
+    // Find all close buttons or icon-only buttons with onclick handlers
+    const closeButtons = html.match(/<button[^>]*onclick="UI\.toggle[^"]*"[^>]*>/g) || []
+    expect(closeButtons.length).toBeGreaterThan(0)
+    closeButtons.forEach(btn => {
+      expect(btn).toContain('aria-label=')
+    })
+  })
 })
 
-/* Last Modified: 2026-04-26T17:07:24Z */
+/* Last Modified: 2026-05-08T08:26:00Z */
