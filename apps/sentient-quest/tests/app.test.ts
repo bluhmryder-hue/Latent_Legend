@@ -12,6 +12,25 @@ describe('SentientQuest App Consistency', () => {
     // In a real env we'd use React Testing Library, but for now we check logic
     expect(page).toBeDefined()
   })
+
+  it('should have properly closed comment header and aria-label attributes on icon buttons in game.html', async () => {
+    const fs = await import('node:fs')
+    const path = await import('node:path')
+    const htmlPath = path.resolve(__dirname, '../public/game.html')
+    const htmlContent = fs.readFileSync(htmlPath, 'utf-8')
+
+    expect(htmlContent.trim().startsWith('<!--')).toBe(true)
+    const firstLine = htmlContent.split('\n')[0]
+    expect(firstLine.endsWith('-->')).toBe(true)
+
+    expect(htmlContent).toContain('aria-label="Close Manifestation Protocol"')
+    expect(htmlContent).toContain('aria-label="Close Help"')
+    expect(htmlContent).toContain('aria-label="Close Chat"')
+    expect(htmlContent).toContain('aria-label="Close AI Job Monitor"')
+    expect(htmlContent).toContain('aria-label="Close Visual Archives"')
+    expect(htmlContent).toContain('aria-label="Close Grimoire"')
+    expect(htmlContent).toContain('aria-label="Close Inspector"')
+  })
 })
 
-/* Last Modified: 2026-04-26T17:07:24Z */
+/* Last Modified: 2026-05-08T08:30:00Z */
