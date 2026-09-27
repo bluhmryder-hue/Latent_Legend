@@ -46523,7 +46523,8 @@
                 if (e.type === 'NPC') {
                     const heartClass = e.isFavorite ? "fa-solid" : "fa-regular";
                     const heartColor = e.isFavorite ? "var(--dis-red)" : "#666";
-                    favHtml = `<button class="icon-btn" style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;" onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')"><i class="${heartClass} fa-heart"></i></button>`;
+                    const favLabel = e.isFavorite ? "Remove from Favorites" : "Add to Favorites";
+                    favHtml = `<button class="icon-btn" aria-label="${favLabel}" title="${favLabel}" style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;" onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')"><i class="${heartClass} fa-heart"></i></button>`;
                 }
 
                 let docHtml = "";
@@ -46918,8 +46919,10 @@
                 card.className = "npc-card";
                 card.style.cssText = "height: 220px; flex-direction: column; position: relative;";
 
+                const favLabel = e.isFavorite ? "Remove from Favorites" : "Add to Favorites";
                 card.innerHTML = `
                     <button class="icon-btn"
+                        aria-label="${favLabel}" title="${favLabel}"
                         style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;"
                         onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')">
                         <i class="${heartClass} fa-heart"></i>
@@ -46999,15 +47002,15 @@
                     </div>
                     <div style="position:absolute; top:5px; right:5px; display:flex; gap:5px;">
                         <button class="icon-btn" style="border:1px solid #000; background:rgba(0,0,0,0.6);"
-                            title="${isTarget ? 'Clear Waypoint' : 'Set Waypoint'}" onclick="event.stopPropagation(); Navigation.setWaypoint('${e.id}')">
+                            title="${isTarget ? 'Clear Waypoint' : 'Set Waypoint'}" aria-label="${isTarget ? 'Clear Waypoint' : 'Set Waypoint'}" onclick="event.stopPropagation(); Navigation.setWaypoint('${e.id}')">
                             <i class="fa-solid ${isTarget ? 'fa-stop' : 'fa-location-crosshairs'}"></i>
                         </button>
                         <button class="icon-btn" style="border:1px solid #000; background:rgba(0,0,0,0.6);"
-                            title="Edit Ambience" onclick="event.stopPropagation(); UI.editAmbience('${e.id}')">
+                            title="Edit Ambience" aria-label="Edit Ambience" onclick="event.stopPropagation(); UI.editAmbience('${e.id}')">
                             <i class="fa-solid fa-wind"></i>
                         </button>
                         <button class="icon-btn" style="border:1px solid #000; background:rgba(0,0,0,0.6);"
-                            title="Inspect Image" onclick="event.stopPropagation(); UI.inspectImage('${imgUrl}', '${(e.visualMeta?.bg?.prompt || "Location Visual").replace(/'/g, "\\'").replace(/"/g, '&quot;')}', 'landscape', '${e.id}')">
+                            title="Inspect Image" aria-label="Inspect Image" onclick="event.stopPropagation(); UI.inspectImage('${imgUrl}', '${(e.visualMeta?.bg?.prompt || "Location Visual").replace(/'/g, "\\'").replace(/"/g, '&quot;')}', 'landscape', '${e.id}')">
                             <i class="fa-solid fa-magnifying-glass-plus"></i>
                         </button>
                     </div>
