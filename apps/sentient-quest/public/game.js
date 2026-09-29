@@ -1,5 +1,5 @@
-// Last Modified: 2026-05-08T08:26:00Z
-// Timestamp: 2026-05-08T08:26:00Z
+// Last Modified: 2026-05-08T18:30:00Z
+// Timestamp: 2026-05-08T18:30:00Z
 
     /* =========================================
     DOMAIN: MECHANICS (Physics & Systems)
@@ -49475,7 +49475,7 @@
             box.innerHTML = `
                 <div class="modal-header" id="dev-sanctum-header" style="cursor: move; padding: 10px; background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--theme-accent); display: flex; justify-content: space-between; align-items: center;">
                     <span style="color: var(--theme-accent); font-family: var(--font-header); font-variant: small-caps;"><i class="fa-solid fa-code"></i> Architect's Sanctum</span>
-                    <button class="icon-btn" onclick="this.parentElement.parentElement.remove()">&times;</button>
+                    <button class="icon-btn" onclick="this.parentElement.parentElement.remove()" aria-label="Close Dev Sanctum">&times;</button>
                 </div>
                 <div class="modal-content" style="padding: 15px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; max-height: 70vh;">
 
@@ -49921,10 +49921,10 @@
                                         <div style="display:flex; align-items:center; gap:10px;">
                                             <span id="qm-workers-text" style="font-weight:bold; font-size:0.75rem; color:#a29bfe; letter-spacing:1px;">Workers (0/0)</span>
                                             <div style="display:flex; gap:6px; margin-left: 5px;">
-                                                <button class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px; background:rgba(255,255,255,0.05);" onclick="Queue.applyBrakes(true)" title="Throttle Down (Brake)"><i class="fa-solid fa-minus"></i></button>
-                                                <button class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px; background:rgba(255,255,255,0.05);" onclick="Queue.applyAcceleration(true)" title="Throttle Up (Accelerate)"><i class="fa-solid fa-plus"></i></button>
-                                                <button class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px; background:rgba(255,255,255,0.05);" onclick="Queue.syncSettings()" title="Reset to Defaults"><i class="fa-solid fa-rotate-left"></i></button>
-                                                <button id="qm-btn-lock" class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px;" onclick="Queue.toggleLock()" title="Lock Throttle"><i class="fa-solid fa-lock-open"></i></button>
+                                                <button class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px; background:rgba(255,255,255,0.05);" onclick="Queue.applyBrakes(true)" title="Throttle Down (Brake)" aria-label="Throttle Down (Brake)"><i class="fa-solid fa-minus"></i></button>
+                                                <button class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px; background:rgba(255,255,255,0.05);" onclick="Queue.applyAcceleration(true)" title="Throttle Up (Accelerate)" aria-label="Throttle Up (Accelerate)"><i class="fa-solid fa-plus"></i></button>
+                                                <button class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px; background:rgba(255,255,255,0.05);" onclick="Queue.syncSettings()" title="Reset to Defaults" aria-label="Reset to Defaults"><i class="fa-solid fa-rotate-left"></i></button>
+                                                <button id="qm-btn-lock" class="gen-btn-secondary" style="padding:4px 10px; font-size:0.65rem; border-radius:12px;" onclick="Queue.toggleLock()" title="Lock Throttle" aria-label="Lock Throttle"><i class="fa-solid fa-lock-open"></i></button>
                                             </div>
                                         </div>
                                         <span id="qm-status-text" style="font-size:0.75rem; font-weight:bold;">Status</span>
@@ -50169,7 +50169,7 @@
             div.innerHTML = `
                 <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #333; padding-bottom:10px;">
                     <span style="color:var(--theme-accent); font-family:var(--font-header); font-variant:small-caps;">Payload Inspector: ${job.systemContext || 'Image Gen'}</span>
-                    <button class="icon-btn" onclick="this.parentElement.parentElement.remove()" style="color:#aaa;"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="icon-btn" onclick="this.parentElement.parentElement.remove()" style="color:#aaa;" aria-label="Close Notification"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <textarea class="gen-input" style="flex:1; resize:none; font-family:monospace; font-size:0.8rem; padding:10px; background:rgba(0,0,0,0.3);" readonly>${Utils.escapeHTML(promptText)}</textarea>
             `;
@@ -50889,7 +50889,7 @@
 
             overlay.innerHTML = `
                 <div style="position:relative; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center;">
-                    <button class="icon-btn" style="position: absolute; top: 20px; right: 30px; font-size: 2.5rem; color: #fff; text-shadow: 0 0 10px #000; z-index: 10001;" onclick="this.parentElement.parentElement.remove()">&times;</button>
+                    <button class="icon-btn" style="position: absolute; top: 20px; right: 30px; font-size: 2.5rem; color: #fff; text-shadow: 0 0 10px #000; z-index: 10001;" onclick="this.parentElement.parentElement.remove()" aria-label="Close Lightbox">&times;</button>
                     <div style="animation: slideUpFade 0.3s ease-out; width: 100%; display: flex; justify-content: center; padding: 20px;">
                         ${modalHtml}
                     </div>
