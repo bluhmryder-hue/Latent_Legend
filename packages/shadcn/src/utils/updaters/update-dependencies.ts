@@ -124,16 +124,6 @@ async function installWithPackageManager(
     return installWithExpo(dependencies, devDependencies, cwd)
   }
 
-  if (packageManager === "pnpm") {
-    if (dependencies?.length) {
-      await execa("pnpm", ["add", "--ignore-workspace-root-check", ...dependencies], { cwd })
-    }
-    if (devDependencies?.length) {
-      await execa("pnpm", ["add", "-D", "--ignore-workspace-root-check", ...devDependencies], { cwd })
-    }
-    return
-  }
-
   if (dependencies?.length) {
     await execa(packageManager, ["add", ...dependencies], {
       cwd,
