@@ -46523,7 +46523,8 @@
                 if (e.type === 'NPC') {
                     const heartClass = e.isFavorite ? "fa-solid" : "fa-regular";
                     const heartColor = e.isFavorite ? "var(--dis-red)" : "#666";
-                    favHtml = `<button class="icon-btn" style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;" onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')"><i class="${heartClass} fa-heart"></i></button>`;
+                    const favAria = e.isFavorite ? "Remove from Favorites" : "Add to Favorites";
+                    favHtml = `<button class="icon-btn" style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;" onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')" aria-label="${favAria}" title="${favAria}"><i class="${heartClass} fa-heart"></i></button>`;
                 }
 
                 let docHtml = "";
@@ -46663,7 +46664,7 @@
                             ${crestHtml}
                             <span>The Grimoire of ${schoolName}</span>
                         </div>
-                        <button class="icon-btn" onclick="UI.toggleGrimoire()">&times;</button>
+                        <button class="icon-btn" onclick="UI.toggleGrimoire()" aria-label="Close Grimoire">&times;</button>
                     `;
                 }
             } else {
@@ -47899,7 +47900,7 @@
                             </div>
                         </div>
 
-                        <button class="icon-btn" style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); border:1px solid #555;" onclick="GrimoireView.inspectCurrentPortrait('${ent.id}')">
+                        <button class="icon-btn" style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); border:1px solid #555;" onclick="GrimoireView.inspectCurrentPortrait('${ent.id}')" aria-label="Inspect Portrait" title="Inspect Portrait">
                             <i class="fa-solid fa-magnifying-glass-plus"></i>
                         </button>
                     </div>
@@ -47970,7 +47971,7 @@
                 <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
                     <div id="grim-img-container" style="position:relative;">
                         <div id="grim-loc-target" style="width: 100%; aspect-ratio: 3/2; background-color: #000; border-radius: 4px; border: 1px solid #444; background-size: cover; background-position: center; background-image:url('${imgUrl}')"></div>
-                        <button class="icon-btn" style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); border:1px solid #555;" onclick="UI.inspectImage('${imgUrl}', 'Location Visual', 'landscape', '${locus.id}', 'grim-loc-target')">
+                        <button class="icon-btn" style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); border:1px solid #555;" onclick="UI.inspectImage('${imgUrl}', 'Location Visual', 'landscape', '${locus.id}', 'grim-loc-target')" aria-label="Inspect Location Visual" title="Inspect Location Visual">
                             <i class="fa-solid fa-magnifying-glass-plus"></i>
                         </button>
                     </div>
@@ -49475,7 +49476,7 @@
             box.innerHTML = `
                 <div class="modal-header" id="dev-sanctum-header" style="cursor: move; padding: 10px; background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--theme-accent); display: flex; justify-content: space-between; align-items: center;">
                     <span style="color: var(--theme-accent); font-family: var(--font-header); font-variant: small-caps;"><i class="fa-solid fa-code"></i> Architect's Sanctum</span>
-                    <button class="icon-btn" onclick="this.parentElement.parentElement.remove()">&times;</button>
+                    <button class="icon-btn" onclick="this.parentElement.parentElement.remove()" aria-label="Close Architect's Sanctum">&times;</button>
                 </div>
                 <div class="modal-content" style="padding: 15px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; max-height: 70vh;">
 
@@ -50169,7 +50170,7 @@
             div.innerHTML = `
                 <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #333; padding-bottom:10px;">
                     <span style="color:var(--theme-accent); font-family:var(--font-header); font-variant:small-caps;">Payload Inspector: ${job.systemContext || 'Image Gen'}</span>
-                    <button class="icon-btn" onclick="this.parentElement.parentElement.remove()" style="color:#aaa;"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="icon-btn" onclick="this.parentElement.parentElement.remove()" style="color:#aaa;" aria-label="Close Payload Inspector"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <textarea class="gen-input" style="flex:1; resize:none; font-family:monospace; font-size:0.8rem; padding:10px; background:rgba(0,0,0,0.3);" readonly>${Utils.escapeHTML(promptText)}</textarea>
             `;
@@ -50889,7 +50890,7 @@
 
             overlay.innerHTML = `
                 <div style="position:relative; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center;">
-                    <button class="icon-btn" style="position: absolute; top: 20px; right: 30px; font-size: 2.5rem; color: #fff; text-shadow: 0 0 10px #000; z-index: 10001;" onclick="this.parentElement.parentElement.remove()">&times;</button>
+                    <button class="icon-btn" style="position: absolute; top: 20px; right: 30px; font-size: 2.5rem; color: #fff; text-shadow: 0 0 10px #000; z-index: 10001;" onclick="this.parentElement.parentElement.remove()" aria-label="Close Overlay">&times;</button>
                     <div style="animation: slideUpFade 0.3s ease-out; width: 100%; display: flex; justify-content: center; padding: 20px;">
                         ${modalHtml}
                     </div>
