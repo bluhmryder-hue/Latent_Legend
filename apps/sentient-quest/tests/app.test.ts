@@ -12,6 +12,36 @@ describe('SentientQuest App Consistency', () => {
     // In a real env we'd use React Testing Library, but for now we check logic
     expect(page).toBeDefined()
   })
+
+  it('should have properly closed comment headers and accessible icon buttons in game.html and game.css', async () => {
+    const fs = await import('fs')
+    const path = await import('path')
+
+    const htmlPath = path.resolve(__dirname, '../public/game.html')
+    const cssPath = path.resolve(__dirname, '../public/game.css')
+
+    const htmlContent = fs.readFileSync(htmlPath, 'utf-8')
+    const cssContent = fs.readFileSync(cssPath, 'utf-8')
+
+    // Verify comment headers
+    const firstHtmlLine = htmlContent.split('\n')[0]
+    expect(firstHtmlLine.startsWith('<!--')).toBe(true)
+    expect(firstHtmlLine.endsWith('-->')).toBe(true)
+
+    const firstCssLine = cssContent.split('\n')[0]
+    expect(firstCssLine.startsWith('/*')).toBe(true)
+    expect(firstCssLine.endsWith('*/')).toBe(true)
+
+    // Verify icon-only buttons in game.html have aria-label attributes
+    const closeBtnRegex = /class="[^"]*(settings-close-btn|icon-btn)[^"]*"/g
+    const matches = htmlContent.match(/<button[^>]*class="[^"]*(settings-close-btn|icon-btn)[^"]*"[^>]*>/g) || []
+
+    expect(matches.length).toBeGreaterThan(0)
+    for (const btnTag of matches) {
+      if (btnTag.includes('Purge')) continue; // skip buttons with visible text
+      expect(btnTag).toContain('aria-label=')
+    }
+  })
 })
 
-/* Last Modified: 2026-04-26T17:07:24Z */
+/* Last Modified: 2026-05-08T08:26:00Z */
