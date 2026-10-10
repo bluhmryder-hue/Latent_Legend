@@ -46663,7 +46663,7 @@
                             ${crestHtml}
                             <span>The Grimoire of ${schoolName}</span>
                         </div>
-                        <button class="icon-btn" onclick="UI.toggleGrimoire()">&times;</button>
+                        <button class="icon-btn" onclick="UI.toggleGrimoire()" aria-label="Close Grimoire">&times;</button>
                     `;
                 }
             } else {
