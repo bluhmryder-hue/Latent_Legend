@@ -51745,6 +51745,45 @@
 
     // Keyboard Shortcuts
     window.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const insp = document.getElementById('inspector-modal');
+            if (insp && (insp.classList.contains('active') || (insp.style.display && insp.style.display !== 'none'))) {
+                UI.closeInspector();
+                return;
+            }
+            const help = document.getElementById('help-modal');
+            if (help && (help.classList.contains('active') || (help.style.display && help.style.display !== 'none'))) {
+                UI.toggleHelp();
+                return;
+            }
+            const chat = document.getElementById('chat-modal');
+            if (chat && chat.style.display && chat.style.display !== 'none') {
+                UI.toggleChat();
+                return;
+            }
+            const telem = document.getElementById('telemetry-box');
+            if (telem && telem.style.display && telem.style.display !== 'none') {
+                UI.toggleTelemetry();
+                return;
+            }
+            const gal = document.getElementById('gallery-modal');
+            if (gal && gal.style.display && gal.style.display !== 'none') {
+                UI.toggleGallery();
+                return;
+            }
+            const grim = document.getElementById('grimoire-modal');
+            if (grim && grim.style.display && grim.style.display !== 'none') {
+                UI.toggleGrimoire();
+                return;
+            }
+            const gen = document.getElementById('genesis-modal');
+            if (gen && gen.classList.contains('active') && gen.classList.contains('settings-mode')) {
+                UI.toggleSettings();
+                return;
+            }
+            return;
+        }
+
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
             return;
         }
