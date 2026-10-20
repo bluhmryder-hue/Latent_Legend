@@ -46523,7 +46523,8 @@
                 if (e.type === 'NPC') {
                     const heartClass = e.isFavorite ? "fa-solid" : "fa-regular";
                     const heartColor = e.isFavorite ? "var(--dis-red)" : "#666";
-                    favHtml = `<button class="icon-btn" style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;" onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')"><i class="${heartClass} fa-heart"></i></button>`;
+                    const favLabel = e.isFavorite ? "Remove from Favorites" : "Add to Favorites";
+                    favHtml = `<button class="icon-btn" aria-label="${favLabel}" title="${favLabel}" style="position:absolute; top:5px; right:5px; z-index:5; color:${heartColor}; border:none; background:rgba(0,0,0,0.5); border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center;" onclick="event.stopPropagation(); Manager.toggleFavorite('${e.id}')"><i class="${heartClass} fa-heart"></i></button>`;
                 }
 
                 let docHtml = "";
@@ -47390,7 +47391,7 @@
                                     </div>
                                     <div style="display:flex; gap:10px; justify-content:flex-end;">
                                         <button class="gen-btn-secondary" style="font-size:0.7rem; padding:4px 8px;" onclick="Jurisprudence.rerunAgendaNote('${note.id}')"><i class="fa-solid fa-rotate-right"></i> Re-Run</button>
-                                        <button class="gen-btn-secondary" style="font-size:0.7rem; padding:4px 8px; color:var(--dis-red); border-color:var(--dis-red);" onclick="Jurisprudence.deleteAgendaNote('${note.id}')"><i class="fa-solid fa-trash"></i></button>
+                                        <button class="gen-btn-secondary" style="font-size:0.7rem; padding:4px 8px; color:var(--dis-red); border-color:var(--dis-red);" onclick="Jurisprudence.deleteAgendaNote('${note.id}')" title="Delete Note" aria-label="Delete Agenda Note"><i class="fa-solid fa-trash"></i></button>
                                     </div>
                                 </div>
                             `;
