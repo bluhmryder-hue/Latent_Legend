@@ -5,3 +5,7 @@
 ## 2026-05-08 - [Blocker: Unterminated Multi-line Comments]
 **Learning:** Pre-existing syntax errors like unterminated `/*` comments in configuration files (e.g., `vitest.config.ts`) can silently break the entire test runner or build process, leading to confusing environment errors like "missing node_modules" when the actual cause is a parse error.
 **Action:** Perform a quick sanity check/lint on configuration files if the environment appears broken despite `pnpm install` succeeding.
+
+## 2026-10-29 - [Unclosed HTML Metadata Header Comments]
+**Learning:** An unclosed `<!--` comment on line 1 of static entry files (like `game.html`) causes DOM parsers and Playwright automation to treat the entire file content as a single HTML comment block, making elements unlocatable.
+**Action:** Ensure all HTML metadata headers are explicitly closed with `-->` on the line they open.
